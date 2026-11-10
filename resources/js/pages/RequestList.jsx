@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { api } from '../api';
 import { useAuth } from '../AuthContext';
 import StatusBadge from '../components/StatusBadge';
@@ -7,14 +7,18 @@ import { STATUS, fmtDate, kes } from '../format';
 
 export default function RequestList() {
     const { user } = useAuth();
+    const navigate = useNavigate();
     const [status, setStatus] = useState('');
     const [rows, setRows] = useState(null);
     const [error, setError] = useState('');
 
     useEffect(() => {
         setRows(null);
+        setError('');
         api('requests' + (status ? `?status=${status}` : '')).then(d => setRows(d.data)).catch(e => setError(e.message));
     }, [status]);
+
+    const open = (id) => navigate(`/requests/${id}`);
 
     return (
         <>
@@ -45,8 +49,10 @@ export default function RequestList() {
                         </thead>
                         <tbody>
                             {rows.map(r => (
-                                <tr key={r.id}>
-                                    <td><Link to={`/requests/${r.id}`} className="fw-semibold">{r.request_no}</Link></td>
+                                <tr key={r.id} role="link" tabIndex={0} style={{ cursor: 'pointer' }}
+                                    onClick={() => open(r.id)}
+                                    onKeyDown={e => { if (e.key === 'Enter') open(r.id); }}>
+                                    <td><Link to={`/requests/${r.id}`} className="fw-semibold" onClick={e => e.stopPropagation()}>{r.request_no}</Link></td>
                                     <td>{r.category}</td>
                                     <td>{r.branch}</td>
                                     <td>{r.requester}</td>
