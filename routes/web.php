@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\ApprovalController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RequestController;
+use App\Http\Controllers\VendorController;
 use Illuminate\Support\Facades\Route;
 
 // JSON API used by the React interface. It uses the normal session and CSRF token (design decision DD-06).
@@ -35,6 +37,18 @@ Route::prefix('api')->group(function () {
         Route::middleware('role:Branch Manager,Procurement Administrator,Finance Officer,Head Office Manager')->group(function () {
             Route::get('approvals', [ApprovalController::class, 'index']);
             Route::post('requests/{id}/decision', [ApprovalController::class, 'decide'])->whereNumber('id');
+        });
+
+        // Vendors and items: Procurement manages, Finance and Head Office can view (VQM-01)
+        Route::middleware('role:Procurement Administrator,Finance Officer,Head Office Manager')->group(function () {
+            Route::get('vendors', [VendorController::class, 'index']);
+            Route::get('items', [ItemController::class, 'index']);
+        });
+        Route::middleware('role:Procurement Administrator')->group(function () {
+            Route::post('vendors', [VendorController::class, 'store']);
+            Route::put('vendors/{id}', [VendorController::class, 'update'])->whereNumber('id');
+            Route::post('items', [ItemController::class, 'store']);
+            Route::put('items/{id}', [ItemController::class, 'update'])->whereNumber('id');
         });
     });
 });

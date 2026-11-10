@@ -3,10 +3,12 @@ import { useAuth } from './AuthContext';
 import Layout from './Layout';
 import Approvals from './pages/Approvals';
 import Dashboard from './pages/Dashboard';
+import Items from './pages/Items';
 import Login from './pages/Login';
 import RequestDetail from './pages/RequestDetail';
 import RequestForm from './pages/RequestForm';
 import RequestList from './pages/RequestList';
+import Vendors from './pages/Vendors';
 
 function Protected({ children }) {
     const { user, loading } = useAuth();
@@ -26,6 +28,8 @@ export default function AppRoutes() {
                 <Route path="/requests/:id" element={<RequestDetail />} />
                 <Route path="/requests/:id/edit" element={<RequestForm />} />
                 <Route path="/approvals" element={<Approvals />} />
+                <Route path="/vendors" element={<Vendors />} />
+                <Route path="/items" element={<Items />} />
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
