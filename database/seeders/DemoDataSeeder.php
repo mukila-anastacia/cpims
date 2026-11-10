@@ -16,8 +16,8 @@ class DemoDataSeeder extends Seeder
         $branch = fn (string $n) => DB::table('branches')->where('name', $n)->value('id');
         $category = fn (string $n) => DB::table('categories')->where('name', $n)->value('id');
 
-        // Test users. All use the password: Password@123  (change it before real use)
-        $pw = Hash::make('Password@123');
+        // Test users. All use the password: rana@2026  (change it before real use)
+        $pw = Hash::make('rana@2026');
         $users = [
             ['System Administrator', 'Industrial Area', 'Grace Wanjiru', 'admin'],
             ['Procurement Administrator', 'Industrial Area', 'David Otieno', 'procurement'],

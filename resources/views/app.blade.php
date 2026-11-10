@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>CPIMS | A-Solar Power Works</title>
+    <script>try { document.documentElement.setAttribute('data-bs-theme', localStorage.getItem('cpims-theme') || 'light'); } catch (e) {}</script>
     @viteReactRefresh
     @vite('resources/js/app.jsx')
 </head>

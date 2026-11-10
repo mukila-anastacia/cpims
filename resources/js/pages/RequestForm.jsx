@@ -108,11 +108,12 @@ export default function RequestForm() {
     return (
         <>
             <nav className="mb-2 small"><Link to="/requests">Requests</Link> / {requestNo || 'New'}</nav>
-            <h2 className="fw-semibold mb-4" style={{ color: 'var(--brand)' }}>{id ? `Edit ${requestNo}` : 'New purchase request'}</h2>
+            <h2 className="fw-semibold mb-3" style={{ color: 'var(--brand)' }}>{id ? `Edit ${requestNo}` : 'New purchase request'}</h2>
 
-            {message && <div className="alert alert-danger" role="alert">{message}</div>}
+            <div className="panel form-card mb-4">
+                {message && <div className="alert alert-danger py-2" role="alert">{message}</div>}
 
-            <div className="panel mb-3">
+                <div className="section-title">Request details</div>
                 <div className="row g-3">
                     <div className="col-md-4">
                         <label className="form-label" htmlFor="cat">Category</label>
@@ -128,40 +129,40 @@ export default function RequestForm() {
                         <div className="invalid-feedback">{fieldError('needed_by')}</div>
                     </div>
                     <div className="col-md-4">
-                        <div className="label small text-secondary text-uppercase">Remaining budget</div>
-                        <div className="fw-semibold" style={{ color: 'var(--brand)' }}>
+                        <div className="form-label">Remaining budget</div>
+                        <div className="fw-semibold pt-1" style={{ color: 'var(--brand)' }}>
                             {!categoryId ? 'Choose a category' : budget ? (budget.has_budget ? kes(budget.remaining) : 'No budget set') : '...'}
                         </div>
                         {budget && budget.has_budget && total > budget.remaining && (
-                            <div className="text-danger small">This request is above the remaining budget. Finance will also need to approve it.</div>
+                            <div className="text-danger small">Above the remaining budget. Finance will also need to approve.</div>
                         )}
                     </div>
                 </div>
-            </div>
 
-            <div className="panel mb-3">
-                <h5 className="fw-semibold mb-3">Items</h5>
+                <hr />
+
+                <div className="section-title">Items</div>
                 {fieldError('lines') && <div className="alert alert-danger py-2">{fieldError('lines')}</div>}
                 <div className="table-responsive">
-                    <table className="table align-middle">
-                        <thead><tr><th style={{ minWidth: 220 }}>Item</th><th style={{ width: 110 }}>Quantity</th><th style={{ width: 70 }}>Unit</th><th style={{ width: 160 }}>Est. unit cost</th><th className="text-end" style={{ width: 150 }}>Line total</th><th /></tr></thead>
+                    <table className="table table-sm align-middle mb-2">
+                        <thead><tr><th style={{ minWidth: 220 }}>Item</th><th style={{ width: 110 }}>Quantity</th><th style={{ width: 60 }}>Unit</th><th style={{ width: 160 }}>Est. unit cost</th><th className="text-end" style={{ width: 150 }}>Line total</th><th /></tr></thead>
                         <tbody>
                             {lines.map((l, i) => (
                                 <tr key={i}>
                                     <td>
-                                        <select className={'form-select' + (fieldError(`lines.${i}.item_id`) ? ' is-invalid' : '')} value={l.item_id} disabled={!categoryId} onChange={e => setLine(i, { item_id: e.target.value })} aria-label="Item">
+                                        <select className={'form-select form-select-sm' + (fieldError(`lines.${i}.item_id`) ? ' is-invalid' : '')} value={l.item_id} disabled={!categoryId} onChange={e => setLine(i, { item_id: e.target.value })} aria-label="Item">
                                             <option value="">{categoryId ? 'Choose an item' : 'Choose a category first'}</option>
                                             {itemsHere.map(it => <option key={it.id} value={it.id}>{it.name}</option>)}
                                         </select>
                                         <div className="invalid-feedback">{fieldError(`lines.${i}.item_id`)}</div>
                                     </td>
                                     <td>
-                                        <input type="number" min="0" step="any" className={'form-control' + (fieldError(`lines.${i}.quantity`) ? ' is-invalid' : '')} value={l.quantity} onChange={e => setLine(i, { quantity: e.target.value })} aria-label="Quantity" />
+                                        <input type="number" min="0" step="any" className={'form-control form-control-sm' + (fieldError(`lines.${i}.quantity`) ? ' is-invalid' : '')} value={l.quantity} onChange={e => setLine(i, { quantity: e.target.value })} aria-label="Quantity" />
                                         <div className="invalid-feedback">{fieldError(`lines.${i}.quantity`)}</div>
                                     </td>
                                     <td className="text-secondary">{unitOf(l.item_id)}</td>
                                     <td>
-                                        <input type="number" min="0" step="any" className={'form-control' + (fieldError(`lines.${i}.unit_cost_est`) ? ' is-invalid' : '')} value={l.unit_cost_est} onChange={e => setLine(i, { unit_cost_est: e.target.value })} aria-label="Estimated unit cost" />
+                                        <input type="number" min="0" step="any" className={'form-control form-control-sm' + (fieldError(`lines.${i}.unit_cost_est`) ? ' is-invalid' : '')} value={l.unit_cost_est} onChange={e => setLine(i, { unit_cost_est: e.target.value })} aria-label="Estimated unit cost" />
                                         <div className="invalid-feedback">{fieldError(`lines.${i}.unit_cost_est`)}</div>
                                     </td>
                                     <td className="text-end">{kes((Number(l.quantity) || 0) * (Number(l.unit_cost_est) || 0))}</td>
@@ -169,36 +170,43 @@ export default function RequestForm() {
                                 </tr>
                             ))}
                         </tbody>
-                        <tfoot><tr><td colSpan="4" className="text-end fw-semibold">Estimated total</td><td className="text-end fw-semibold">{kes(total)}</td><td /></tr></tfoot>
                     </table>
                 </div>
                 <button type="button" className="btn btn-sm btn-outline-success" onClick={addLine}>+ Add item</button>
-            </div>
 
-            <div className="panel mb-3">
-                <label className="form-label" htmlFor="just">Justification</label>
-                <textarea id="just" rows="3" className={'form-control' + (fieldError('justification') ? ' is-invalid' : '')} value={justification} onChange={e => setJustification(e.target.value)} placeholder="Why is this purchase needed?" />
+                <hr />
+
+                <div className="section-title">Justification</div>
+                <textarea id="just" rows="2" className={'form-control' + (fieldError('justification') ? ' is-invalid' : '')} value={justification} onChange={e => setJustification(e.target.value)} placeholder="Why is this purchase needed?" aria-label="Justification" />
                 <div className="invalid-feedback">{fieldError('justification')}</div>
-            </div>
 
-            {duplicates && (
-                <div className="alert alert-warning">
-                    <div className="fw-semibold mb-2">Similar items were requested recently:</div>
-                    <ul className="mb-3">
-                        {duplicates.map((d, i) => <li key={i}>{d.item}: {d.quantity} requested by {d.branch} on {d.date} ({d.request_no})</li>)}
-                    </ul>
-                    <label className="form-label" htmlFor="dup">Why is this request still needed?</label>
-                    <textarea id="dup" rows="2" className="form-control" value={dupText} onChange={e => setDupText(e.target.value)} />
-                    <div className="small mt-2">Your reason will be shown to the approver. Then press Submit again.</div>
+                {duplicates && (
+                    <div className="alert alert-warning mt-3 mb-0">
+                        <div className="fw-semibold mb-2">Similar items were requested recently:</div>
+                        <ul className="mb-3">
+                            {duplicates.map((d, i) => <li key={i}>{d.item}: {d.quantity} requested by {d.branch} on {d.date} ({d.request_no})</li>)}
+                        </ul>
+                        <label className="form-label" htmlFor="dup">Why is this request still needed?</label>
+                        <textarea id="dup" rows="2" className="form-control" value={dupText} onChange={e => setDupText(e.target.value)} />
+                        <div className="small mt-2">Your reason will be shown to the approver. Then press Submit again.</div>
+                    </div>
+                )}
+
+                <hr />
+
+                <div className="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                    <div>
+                        <span className="text-secondary small text-uppercase me-2">Estimated total</span>
+                        <span className="fs-5 fw-semibold" style={{ color: 'var(--brand)' }}>{kes(total)}</span>
+                    </div>
+                    <div className="d-flex gap-2">
+                        <Link to="/requests" className="btn btn-link">Cancel</Link>
+                        <button className="btn btn-outline-secondary" onClick={saveDraft} disabled={busy}>Save draft</button>
+                        <button className="btn btn-accent" onClick={submit} disabled={busy}>
+                            {busy ? <span className="spinner-border spinner-border-sm" /> : 'Submit for approval'}
+                        </button>
+                    </div>
                 </div>
-            )}
-
-            <div className="d-flex gap-2 mb-5">
-                <button className="btn btn-outline-secondary" onClick={saveDraft} disabled={busy}>Save draft</button>
-                <button className="btn btn-brand" onClick={submit} disabled={busy}>
-                    {busy ? <span className="spinner-border spinner-border-sm" /> : 'Submit for approval'}
-                </button>
-                <Link to="/requests" className="btn btn-link">Cancel</Link>
             </div>
         </>
     );

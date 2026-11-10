@@ -18,7 +18,7 @@ export default function Dashboard() {
 
             <h5 className="fw-semibold mb-3" style={{ color: 'var(--brand)' }}>What you will do here</h5>
             {(TASKS[user.role] ?? []).map(t => <div key={t} className="task">{t}</div>)}
-            <p className="text-secondary small mt-4">More screens appear here as each part of the system is built.</p>
+        
         </>
     );
 }

@@ -1,6 +1,20 @@
 import { useState } from 'react';
 import { useAuth } from '../AuthContext';
 
+function SunMark() {
+    return (
+        <svg width="38" height="38" viewBox="0 0 38 38" aria-hidden="true">
+            <circle cx="19" cy="19" r="8" fill="#f28c28" />
+            <g stroke="#f28c28" strokeWidth="2.4" strokeLinecap="round">
+                <line x1="19" y1="3" x2="19" y2="8" /><line x1="19" y1="30" x2="19" y2="35" />
+                <line x1="3" y1="19" x2="8" y2="19" /><line x1="30" y1="19" x2="35" y2="19" />
+                <line x1="7.7" y1="7.7" x2="11.2" y2="11.2" /><line x1="26.8" y1="26.8" x2="30.3" y2="30.3" />
+                <line x1="30.3" y1="7.7" x2="26.8" y2="11.2" /><line x1="11.2" y1="26.8" x2="7.7" y2="30.3" />
+            </g>
+        </svg>
+    );
+}
+
 export default function Login() {
     const { login, notice } = useAuth();
     const [username, setUsername] = useState('');
@@ -23,49 +37,40 @@ export default function Login() {
     }
 
     return (
-        <div className="login-wrap">
-            <section className="login-side">
-                <div className="tag">A-SOLAR POWER WORKS</div>
-                <h1>One view of procurement across all nine branches.</h1>
-                <ul>
-                    <li>Requests, approvals and budgets in one place</li>
-                    <li>Quotations compared and duplicates flagged</li>
-                    <li>Orders, deliveries and invoices matched</li>
-                    <li>Every action recorded in an audit trail</li>
-                </ul>
-            </section>
-            <section className="login-main">
+        <div className="login-page" data-bs-theme="dark">
+            <header className="login-top">
+                <SunMark />
+                <div>A-Solar Power Works<small>PROCUREMENT SYSTEM</small></div>
+            </header>
+
+            <main className="login-center">
                 <form className="login-card" onSubmit={submit} noValidate>
-                    <h2>Log in</h2>
-                    <p className="text-secondary mb-4">Use your CPIMS username and password.</p>
+                    <h1>Welcome back</h1>
+                    <p className="sub">Log in to continue.</p>
 
                     {notice && <div className="alert alert-warning py-2">{notice}</div>}
                     {error && <div className="alert alert-danger py-2" role="alert">{error}</div>}
 
-                    <div className="mb-3">
-                        <label htmlFor="username" className="form-label">Username</label>
-                        <input id="username" className="form-control form-control-lg" autoComplete="username"
+                    <div className="form-floating mb-3">
+                        <input id="username" className="form-control" placeholder="Username" autoComplete="username"
                                autoFocus value={username} onChange={e => setUsername(e.target.value)} />
+                        <label htmlFor="username">Username</label>
                     </div>
-                    <div className="mb-4">
-                        <label htmlFor="password" className="form-label">Password</label>
-                        <div className="input-group input-group-lg">
-                            <input id="password" className="form-control" autoComplete="current-password"
-                                   type={show ? 'text' : 'password'} value={password}
-                                   onChange={e => setPassword(e.target.value)} />
-                            <button type="button" className="btn btn-outline-secondary" onClick={() => setShow(!show)}>
-                                {show ? 'Hide' : 'Show'}
-                            </button>
-                        </div>
+                    <div className="form-floating mb-4">
+                        <input id="password" className="form-control" placeholder="Password" autoComplete="current-password"
+                               type={show ? 'text' : 'password'} value={password} style={{ paddingRight: 64 }}
+                               onChange={e => setPassword(e.target.value)} />
+                        <label htmlFor="password">Password</label>
+                        <button type="button" className="pw-toggle" onClick={() => setShow(!show)}>{show ? 'Hide' : 'Show'}</button>
                     </div>
-                    <button className="btn btn-brand btn-lg w-100" disabled={busy}>
+
+                    <button className="btn btn-accent btn-lg w-100" disabled={busy}>
                         {busy ? <span className="spinner-border spinner-border-sm" /> : 'Log in'}
                     </button>
-                    <p className="text-secondary small mt-4 mb-0">
-                        Accounts lock for 15 minutes after 5 failed attempts. Sessions end after 15 minutes of inactivity.
-                    </p>
                 </form>
-            </section>
+            </main>
+
+            <footer className="login-foot">REQUESTS &nbsp;|&nbsp; APPROVALS &nbsp;|&nbsp; ORDERS &nbsp;|&nbsp; INVOICES &nbsp;|&nbsp; AUDIT TRAIL</footer>
         </div>
     );
 }

@@ -20,7 +20,7 @@ class AuthTest extends TestCase
 
     public function test_valid_login_returns_user_and_is_audited(): void
     {
-        $this->postJson('/api/login', ['username' => 'amina', 'password' => 'Password@123'])
+        $this->postJson('/api/login', ['username' => 'amina', 'password' => 'rana@2026'])
             ->assertOk()
             ->assertJsonPath('user.role', 'Requester')
             ->assertJsonPath('user.branch', 'Kasarani');
@@ -40,7 +40,7 @@ class AuthTest extends TestCase
             $this->postJson('/api/login', ['username' => 'john', 'password' => 'wrong']);
         }
 
-        $this->postJson('/api/login', ['username' => 'john', 'password' => 'Password@123'])->assertStatus(423);
+        $this->postJson('/api/login', ['username' => 'john', 'password' => 'rana@2026'])->assertStatus(423);
         $this->assertDatabaseHas('audit_logs', ['action' => 'ACCOUNT_LOCKED']);
     }
 
