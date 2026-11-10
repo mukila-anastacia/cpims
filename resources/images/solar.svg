@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0a211d"/>
+      <stop offset="0.65" stop-color="#1b5246"/>
+      <stop offset="1" stop-color="#2f6b5e"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#f2b441" stop-opacity="0.85"/>
+      <stop offset="0.45" stop-color="#f2b441" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#f2b441" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="panelFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2a6a8c"/>
+      <stop offset="1" stop-color="#0f2f45"/>
+    </linearGradient>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#143b33"/>
+      <stop offset="1" stop-color="#081a17"/>
+    </linearGradient>
+    <pattern id="cells" width="50" height="45" patternUnits="userSpaceOnUse">
+      <path d="M50 0H0V45" fill="none" stroke="#8fb9cb" stroke-width="1.6" opacity="0.55"/>
+    </pattern>
+    <g id="panel">
+      <rect width="300" height="180" rx="6" fill="url(#panelFill)"/>
+      <rect width="300" height="180" rx="6" fill="url(#cells)"/>
+      <polygon points="0,0 170,0 60,180 0,180" fill="#ffffff" opacity="0.07"/>
+      <rect width="300" height="180" rx="6" fill="none" stroke="#d5e5df" stroke-width="5"/>
+    </g>
+  </defs>
+
+  <rect width="1200" height="900" fill="url(#sky)"/>
+  <circle cx="930" cy="170" r="330" fill="url(#glow)"/>
+  <circle cx="930" cy="170" r="72" fill="#f2b441"/>
+  <g stroke="#f2b441" stroke-width="5" stroke-linecap="round" opacity="0.8">
+    <line x1="930" y1="62" x2="930" y2="36"/><line x1="930" y1="278" x2="930" y2="304"/>
+    <line x1="822" y1="170" x2="796" y2="170"/><line x1="1038" y1="170" x2="1064" y2="170"/>
+    <line x1="854" y1="94" x2="836" y2="76"/><line x1="1006" y1="246" x2="1024" y2="264"/>
+    <line x1="1006" y1="94" x2="1024" y2="76"/><line x1="854" y1="246" x2="836" y2="264"/>
+  </g>
+
+  <rect y="640" width="1200" height="260" fill="url(#ground)"/>
+
+  <!-- back row -->
+  <g opacity="0.9">
+    <use href="#panel" transform="translate(120,500) scale(0.7) skewX(-12)"/>
+    <use href="#panel" transform="translate(370,500) scale(0.7) skewX(-12)"/>
+    <use href="#panel" transform="translate(620,500) scale(0.7) skewX(-12)"/>
+    <use href="#panel" transform="translate(870,500) scale(0.7) skewX(-12)"/>
+  </g>
+  <!-- front row -->
+  <use href="#panel" transform="translate(10,640) skewX(-12)"/>
+  <use href="#panel" transform="translate(350,640) skewX(-12)"/>
+  <use href="#panel" transform="translate(690,640) skewX(-12)"/>
+  <use href="#panel" transform="translate(1030,640) skewX(-12)"/>
+</svg>
