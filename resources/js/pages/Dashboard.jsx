@@ -7,8 +7,11 @@ export default function Dashboard() {
 
     return (
         <>
-            <h2 className="fw-semibold mb-1" style={{ color: 'var(--brand)' }}>Welcome, {first}</h2>
-            <p className="text-secondary mb-4">Here is your workspace at A-Solar Power Works.</p>
+            <section className="hero">
+                <div className="eyebrow">A-Solar Power Works | {user.role}</div>
+                <div className="hero-title">Welcome,<br /><span>{first}</span></div>
+                <p>Here is your workspace. Everything you need for procurement is on the left.</p>
+            </section>
 
             <div className="row g-3 mb-4">
                 <div className="col-md-4"><div className="panel"><div className="label">Role</div><div className="value">{user.role}</div></div></div>
@@ -16,9 +19,8 @@ export default function Dashboard() {
                 <div className="col-md-4"><div className="panel"><div className="label">Access</div><div className="value">{user.is_head_office ? 'All branches' : 'Own branch'}</div></div></div>
             </div>
 
-            <h5 className="fw-semibold mb-3" style={{ color: 'var(--brand)' }}>What you will do here</h5>
+            <h5 className="mb-3">What you will do here</h5>
             {(TASKS[user.role] ?? []).map(t => <div key={t} className="task">{t}</div>)}
-        
         </>
     );
 }

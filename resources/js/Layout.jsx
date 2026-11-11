@@ -65,7 +65,7 @@ export default function Layout({ children }) {
                     <button className="btn btn-sm btn-outline-light" onClick={flip}>{theme === 'dark' ? 'Light mode' : 'Dark mode'}</button>
                     <Bell />
                     <div className="text-end lh-sm">
-                        <div className="fw-semibold">{user.name}</div>
+                        <div className="who">{user.name}</div>
                         <small className="text-white-50">{user.role} | {user.branch}</small>
                     </div>
                     <button className="btn btn-sm btn-outline-light" onClick={logout}>Log out</button>
