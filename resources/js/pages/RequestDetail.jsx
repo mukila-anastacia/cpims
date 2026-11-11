@@ -58,6 +58,7 @@ export default function RequestDetail() {
                 <div className="d-flex gap-2">
                     {r.can_edit && <Link to={`/requests/${r.id}/edit`} className="btn btn-brand">Edit and submit</Link>}
                     {r.can_cancel && <button className="btn btn-outline-danger" onClick={cancel}>Cancel request</button>}
+                     {r.can_quote && <Link to={`/quotations/${r.id}`} className="btn btn-accent">Quotations</Link>}
                 </div>
             </div>
 

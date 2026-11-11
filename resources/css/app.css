@@ -133,3 +133,9 @@ h5, .panel h5 { font-weight: 700; text-transform: uppercase; letter-spacing: .06
 /* The login page keeps its original font */
 .login-page, .login-page * { font-family: 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif !important; }
 .login-page h1 { letter-spacing: normal; }
+
+/* Quotation comparison */
+.compare th { white-space: nowrap; }
+.compare td.lowest { background: rgba(46,158,107,.16); color: #1f7a52; font-weight: 700; }
+[data-bs-theme="dark"] .compare td.lowest { color: #6fd6a3; }
+.compare th.sel, .compare td.sel { border-top: 0; box-shadow: inset 3px 0 0 var(--accent); }

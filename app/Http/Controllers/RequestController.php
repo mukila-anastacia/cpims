@@ -155,6 +155,7 @@ class RequestController extends Controller
             'budget_exception' => (bool) $r->budget_exception,
             'can_edit' => $own && in_array($r->status, ['draft', 'returned'], true),
             'can_cancel' => $own && in_array($r->status, ['draft', 'returned', 'in_approval'], true),
+            'can_quote' => in_array($r->status, ['approved', 'ordered', 'received', 'closed'], true) && $user->hasRole('Procurement Administrator', 'Finance Officer', 'Head Office Manager'),
         ];
 
         if ($full) {
