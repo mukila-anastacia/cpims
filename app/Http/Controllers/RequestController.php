@@ -159,6 +159,7 @@ class RequestController extends Controller
         ];
 
         if ($full) {
+            $out['order_id'] = $r->purchaseOrder?->id;
             $out['lines'] = $r->lines->map(fn ($l) => [
                 'id' => $l->id,
                 'item_id' => $l->item_id,

@@ -139,3 +139,16 @@ h5, .panel h5 { font-weight: 700; text-transform: uppercase; letter-spacing: .06
 .compare td.lowest { background: rgba(46,158,107,.16); color: #1f7a52; font-weight: 700; }
 [data-bs-theme="dark"] .compare td.lowest { color: #6fd6a3; }
 .compare th.sel, .compare td.sel { border-top: 0; box-shadow: inset 3px 0 0 var(--accent); }
+
+/* Printing: only the purchase order, in black on white */
+@media print {
+  .topbar, .sidebar, .no-print { display: none !important; }
+  :root, [data-bs-theme="dark"] { --surface: #fff; --text: #000; --muted: #444; --brand: #000; --border: #bbb; --bg: #fff;
+    --bs-body-bg: #fff; --bs-body-color: #000; --bs-border-color: #bbb; }
+  body { background: #fff !important; color: #000 !important; }
+  .shell { display: block; }
+  .content { padding: 0; max-width: none; }
+  .panel { border: 0; background: #fff; color: #000; padding: 0; }
+  .table { --bs-table-bg: #fff; --bs-table-color: #000; }
+  @page { margin: 16mm; }
+}

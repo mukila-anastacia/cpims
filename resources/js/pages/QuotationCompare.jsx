@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { api } from '../api';
 import { useAuth } from '../AuthContext';
 import StatusBadge from '../components/StatusBadge';
@@ -8,6 +8,8 @@ import { fmtDate, kes } from '../format';
 export default function QuotationCompare() {
     const { id } = useParams();
     const { user } = useAuth();
+    const navigate = useNavigate();
+    const [orderMsg, setOrderMsg] = useState('');
     const canEdit = user.role === 'Procurement Administrator';
     const [data, setData] = useState(null);
     const [vendors, setVendors] = useState([]);
@@ -66,6 +68,17 @@ export default function QuotationCompare() {
         if (!window.confirm(`Remove the quotation from ${q.vendor}?`)) return;
         try { setData(await api(`requests/${id}/quotations/${q.id}`, { method: 'DELETE' })); setFlash('Quotation removed.'); }
         catch (e2) { setFlash(''); setError(e2.message); }
+    }
+
+    async function issueOrder() {
+        const vendor = quotations.find(q => q.is_selected)?.vendor;
+        if (!window.confirm(`Issue the purchase order to ${vendor}?`)) return;
+        setBusy(true); setOrderMsg('');
+        try {
+            const d = await api(`requests/${id}/order`, { method: 'POST' });
+            navigate(`/orders/${d.data.id}`, { state: { flash: `Purchase order ${d.data.po_no} issued.` } });
+        } catch (e2) { setOrderMsg(e2.errors?.quotation?.[0] || e2.message); }
+        finally { setBusy(false); }
     }
 
     function startChoose(q) { setForm(null); setFlash(''); setChooseMsg(''); setReason(''); setChoose(q); }
@@ -231,7 +244,14 @@ export default function QuotationCompare() {
                 ))}
             </div>
 
-            {hasSelected && !locked && <div className="alert alert-success">A vendor is selected. The next step, issuing the purchase order, is built next.</div>}
+            {hasSelected && !locked && canEdit && (
+                <div className="panel mb-4" style={{ borderLeft: '4px solid var(--accent)' }}>
+                    <h5 className="mb-2">Ready to order</h5>
+                    <p className="mb-3">A vendor is selected. Issue the purchase order to send the request on to delivery.</p>
+                    {orderMsg && <div className="alert alert-danger py-2">{orderMsg}</div>}
+                    <button className="btn btn-accent" disabled={busy} onClick={issueOrder}>Issue purchase order</button>
+                </div>
+            )}
         </>
     );
 }

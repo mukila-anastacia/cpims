@@ -5,6 +5,8 @@ import Approvals from './pages/Approvals';
 import Dashboard from './pages/Dashboard';
 import Items from './pages/Items';
 import Login from './pages/Login';
+import OrderDetail from './pages/OrderDetail';
+import Orders from './pages/Orders';
 import QuotationCompare from './pages/QuotationCompare';
 import QuotationQueue from './pages/QuotationQueue';
 import RequestDetail from './pages/RequestDetail';
@@ -34,6 +36,8 @@ export default function AppRoutes() {
                 <Route path="/items" element={<Items />} />
                 <Route path="/quotations" element={<QuotationQueue />} />
                 <Route path="/quotations/:id" element={<QuotationCompare />} />
+                <Route path="/orders" element={<Orders />} />
+                <Route path="/orders/:id" element={<OrderDetail />} />
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

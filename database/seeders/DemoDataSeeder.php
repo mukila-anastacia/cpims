@@ -27,6 +27,8 @@ class DemoDataSeeder extends Seeder
             ['Requester', 'Kasarani', 'Amina Wafula', 'amina'],
             ['Branch Manager', 'Karen', 'Susan Njeri', 'manager.karen'],
             ['Requester', 'Karen', 'John Kiprop', 'john'],
+            ['Requester', 'Kasarani', 'Faith Njoroge', 'store.kasarani'],
+            ['Requester', 'Karen', 'Brian Mutua', 'store.karen'],
         ];
         foreach ($users as [$r, $b, $name, $username]) {
             DB::table('users')->insert([

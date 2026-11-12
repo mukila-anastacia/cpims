@@ -4,6 +4,7 @@ use App\Http\Controllers\ApprovalController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\VendorController;
@@ -47,6 +48,15 @@ Route::prefix('api')->group(function () {
             Route::get('quotation-queue', [QuotationController::class, 'queue']);
             Route::get('requests/{id}/quotations', [QuotationController::class, 'show'])->whereNumber('id');
         });
+
+        // Orders: viewed by branch staff for their own branch and by head office roles (POR-01 to 05)
+        Route::middleware('role:Requester,Branch Manager,Procurement Administrator,Finance Officer,Head Office Manager')->group(function () {
+            Route::get('orders', [OrderController::class, 'index']);
+            Route::get('orders/{id}', [OrderController::class, 'show'])->whereNumber('id');
+        });
+        // Deliveries are recorded by branch staff, or by Procurement with a logged override
+        Route::post('orders/{id}/receipts', [OrderController::class, 'receive'])->whereNumber('id')->middleware('role:Requester,Procurement Administrator');
+
         Route::middleware('role:Procurement Administrator')->group(function () {
             Route::post('vendors', [VendorController::class, 'store']);
             Route::put('vendors/{id}', [VendorController::class, 'update'])->whereNumber('id');
@@ -57,6 +67,7 @@ Route::prefix('api')->group(function () {
             Route::put('requests/{id}/quotations/{qid}', [QuotationController::class, 'update'])->whereNumber('id')->whereNumber('qid');
             Route::delete('requests/{id}/quotations/{qid}', [QuotationController::class, 'destroy'])->whereNumber('id')->whereNumber('qid');
             Route::post('requests/{id}/quotations/{qid}/select', [QuotationController::class, 'select'])->whereNumber('id')->whereNumber('qid');
+            Route::post('requests/{id}/order', [OrderController::class, 'store'])->whereNumber('id');
         });
     });
 });
