@@ -3,6 +3,9 @@ import { useAuth } from './AuthContext';
 import Layout from './Layout';
 import Approvals from './pages/Approvals';
 import Dashboard from './pages/Dashboard';
+import InvoiceDetail from './pages/InvoiceDetail';
+import InvoiceForm from './pages/InvoiceForm';
+import Invoices from './pages/Invoices';
 import Items from './pages/Items';
 import Login from './pages/Login';
 import OrderDetail from './pages/OrderDetail';
@@ -38,6 +41,9 @@ export default function AppRoutes() {
                 <Route path="/quotations/:id" element={<QuotationCompare />} />
                 <Route path="/orders" element={<Orders />} />
                 <Route path="/orders/:id" element={<OrderDetail />} />
+                <Route path="/invoices" element={<Invoices />} />
+                <Route path="/invoices/new" element={<InvoiceForm />} />
+                <Route path="/invoices/:id" element={<InvoiceDetail />} />
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

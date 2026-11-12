@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ApprovalController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderController;
@@ -47,6 +48,10 @@ Route::prefix('api')->group(function () {
             Route::get('items', [ItemController::class, 'index']);
             Route::get('quotation-queue', [QuotationController::class, 'queue']);
             Route::get('requests/{id}/quotations', [QuotationController::class, 'show'])->whereNumber('id');
+
+            // Invoices can be viewed by Finance, Procurement and Head Office (INV-01 to 03)
+            Route::get('invoices', [InvoiceController::class, 'index']);
+            Route::get('invoices/{id}', [InvoiceController::class, 'show'])->whereNumber('id');
         });
 
         // Orders: viewed by branch staff for their own branch and by head office roles (POR-01 to 05)
@@ -56,6 +61,12 @@ Route::prefix('api')->group(function () {
         });
         // Deliveries are recorded by branch staff, or by Procurement with a logged override
         Route::post('orders/{id}/receipts', [OrderController::class, 'receive'])->whereNumber('id')->middleware('role:Requester,Procurement Administrator');
+
+        // Finance enters invoices
+        Route::middleware('role:Finance Officer')->group(function () {
+            Route::get('invoice-orders', [InvoiceController::class, 'orders']);
+            Route::post('invoices', [InvoiceController::class, 'store']);
+        });
 
         Route::middleware('role:Procurement Administrator')->group(function () {
             Route::post('vendors', [VendorController::class, 'store']);
@@ -68,6 +79,7 @@ Route::prefix('api')->group(function () {
             Route::delete('requests/{id}/quotations/{qid}', [QuotationController::class, 'destroy'])->whereNumber('id')->whereNumber('qid');
             Route::post('requests/{id}/quotations/{qid}/select', [QuotationController::class, 'select'])->whereNumber('id')->whereNumber('qid');
             Route::post('requests/{id}/order', [OrderController::class, 'store'])->whereNumber('id');
+            Route::post('invoices/{id}/resolve', [InvoiceController::class, 'resolve'])->whereNumber('id');
         });
     });
 });
