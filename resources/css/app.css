@@ -152,3 +152,5 @@ h5, .panel h5 { font-weight: 700; text-transform: uppercase; letter-spacing: .06
   .table { --bs-table-bg: #fff; --bs-table-color: #000; }
   @page { margin: 16mm; }
 }
+
+.audit-pre { font-size: .8rem; background: var(--hover); color: var(--text); padding: 8px 12px; border-radius: 6px; margin: 4px 0 0; white-space: pre-wrap; }

@@ -1,13 +1,16 @@
 <?php
 
 use App\Http\Controllers\ApprovalController;
+use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\RequestController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorController;
 use Illuminate\Support\Facades\Route;
 
@@ -42,30 +45,40 @@ Route::prefix('api')->group(function () {
             Route::post('requests/{id}/decision', [ApprovalController::class, 'decide'])->whereNumber('id');
         });
 
-        // Vendors, items and quotations: Procurement manages, Finance and Head Office can view (VQM-01 to 03)
+        // Vendors, items, quotations and invoices: Procurement manages, Finance and Head Office can view
         Route::middleware('role:Procurement Administrator,Finance Officer,Head Office Manager')->group(function () {
             Route::get('vendors', [VendorController::class, 'index']);
             Route::get('items', [ItemController::class, 'index']);
             Route::get('quotation-queue', [QuotationController::class, 'queue']);
             Route::get('requests/{id}/quotations', [QuotationController::class, 'show'])->whereNumber('id');
-
-            // Invoices can be viewed by Finance, Procurement and Head Office (INV-01 to 03)
             Route::get('invoices', [InvoiceController::class, 'index']);
             Route::get('invoices/{id}', [InvoiceController::class, 'show'])->whereNumber('id');
         });
 
-        // Orders: viewed by branch staff for their own branch and by head office roles (POR-01 to 05)
+        // Orders: viewed by branch staff for their own branch and by head office roles
         Route::middleware('role:Requester,Branch Manager,Procurement Administrator,Finance Officer,Head Office Manager')->group(function () {
             Route::get('orders', [OrderController::class, 'index']);
             Route::get('orders/{id}', [OrderController::class, 'show'])->whereNumber('id');
         });
-        // Deliveries are recorded by branch staff, or by Procurement with a logged override
         Route::post('orders/{id}/receipts', [OrderController::class, 'receive'])->whereNumber('id')->middleware('role:Requester,Procurement Administrator');
 
-        // Finance enters invoices
+        // Budgets: Finance sets them, Head Office can view (BUD-01)
+        Route::get('budgets', [BudgetController::class, 'index'])->middleware('role:Finance Officer,Head Office Manager');
+
+        // Audit log: Administrator and Head Office (AUD-01, AUD-02)
+        Route::get('audit-logs', [AuditLogController::class, 'index'])->middleware('role:System Administrator,Head Office Manager');
+
         Route::middleware('role:Finance Officer')->group(function () {
             Route::get('invoice-orders', [InvoiceController::class, 'orders']);
             Route::post('invoices', [InvoiceController::class, 'store']);
+            Route::post('budgets', [BudgetController::class, 'store']);
+            Route::put('budgets/{id}', [BudgetController::class, 'update'])->whereNumber('id');
+        });
+
+        Route::middleware('role:System Administrator')->group(function () {
+            Route::get('users', [UserController::class, 'index']);
+            Route::post('users', [UserController::class, 'store']);
+            Route::put('users/{id}', [UserController::class, 'update'])->whereNumber('id');
         });
 
         Route::middleware('role:Procurement Administrator')->group(function () {

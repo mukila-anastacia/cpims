@@ -2,6 +2,8 @@ import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import Layout from './Layout';
 import Approvals from './pages/Approvals';
+import AuditLog from './pages/AuditLog';
+import Budgets from './pages/Budgets';
 import Dashboard from './pages/Dashboard';
 import InvoiceDetail from './pages/InvoiceDetail';
 import InvoiceForm from './pages/InvoiceForm';
@@ -15,6 +17,7 @@ import QuotationQueue from './pages/QuotationQueue';
 import RequestDetail from './pages/RequestDetail';
 import RequestForm from './pages/RequestForm';
 import RequestList from './pages/RequestList';
+import Users from './pages/Users';
 import Vendors from './pages/Vendors';
 
 function Protected({ children }) {
@@ -44,6 +47,9 @@ export default function AppRoutes() {
                 <Route path="/invoices" element={<Invoices />} />
                 <Route path="/invoices/new" element={<InvoiceForm />} />
                 <Route path="/invoices/:id" element={<InvoiceDetail />} />
+                <Route path="/budgets" element={<Budgets />} />
+                <Route path="/users" element={<Users />} />
+                <Route path="/audit-log" element={<AuditLog />} />
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
