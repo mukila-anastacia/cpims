@@ -154,3 +154,11 @@ h5, .panel h5 { font-weight: 700; text-transform: uppercase; letter-spacing: .06
 }
 
 .audit-pre { font-size: .8rem; background: var(--hover); color: var(--text); padding: 8px 12px; border-radius: 6px; margin: 4px 0 0; white-space: pre-wrap; }
+
+/* Dashboard cards and report bars */
+.stat-card { transition: border-color .15s, transform .15s; color: var(--text); }
+.stat-card:hover { border-color: var(--accent); transform: translateY(-2px); color: var(--text); }
+.stat-value { font-family: var(--font-head); font-weight: 800; font-size: 2.8rem; line-height: 1.1; color: var(--brand); }
+.stat-value.attention { color: var(--accent-dark); }
+.bar-track { height: 10px; background: var(--hover); border-radius: 5px; overflow: hidden; }
+.bar-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--green)); border-radius: 5px; }

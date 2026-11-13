@@ -4,11 +4,13 @@ use App\Http\Controllers\ApprovalController;
 use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BudgetController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\QuotationController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorController;
@@ -24,6 +26,7 @@ Route::prefix('api')->group(function () {
         Route::get('me', [AuthController::class, 'me']);
         Route::get('admin/ping', fn () => response()->json(['ok' => true]))->middleware('role:System Administrator');
 
+        Route::get('dashboard', [DashboardController::class, 'index']);
         Route::get('notifications', [NotificationController::class, 'index']);
         Route::post('notifications/read', [NotificationController::class, 'readAll']);
 
@@ -43,6 +46,10 @@ Route::prefix('api')->group(function () {
         Route::middleware('role:Branch Manager,Procurement Administrator,Finance Officer,Head Office Manager')->group(function () {
             Route::get('approvals', [ApprovalController::class, 'index']);
             Route::post('requests/{id}/decision', [ApprovalController::class, 'decide'])->whereNumber('id');
+
+            // Reports and exports: branch managers see only their own branch (RPT-01 to RPT-03)
+            Route::get('reports/summary', [ReportController::class, 'summary']);
+            Route::get('reports/export', [ReportController::class, 'export']);
         });
 
         // Vendors, items, quotations and invoices: Procurement manages, Finance and Head Office can view

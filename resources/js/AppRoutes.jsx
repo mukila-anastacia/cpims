@@ -16,6 +16,7 @@ import QuotationCompare from './pages/QuotationCompare';
 import QuotationQueue from './pages/QuotationQueue';
 import RequestDetail from './pages/RequestDetail';
 import RequestForm from './pages/RequestForm';
+import Reports from './pages/Reports';
 import RequestList from './pages/RequestList';
 import Users from './pages/Users';
 import Vendors from './pages/Vendors';
@@ -48,6 +49,7 @@ export default function AppRoutes() {
                 <Route path="/invoices/new" element={<InvoiceForm />} />
                 <Route path="/invoices/:id" element={<InvoiceDetail />} />
                 <Route path="/budgets" element={<Budgets />} />
+                <Route path="/reports" element={<Reports />} />
                 <Route path="/users" element={<Users />} />
                 <Route path="/audit-log" element={<AuditLog />} />
             </Route>

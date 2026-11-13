@@ -1,22 +1,34 @@
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { api } from '../api';
 import { useAuth } from '../AuthContext';
 import { TASKS } from '../menu';
 
 export default function Dashboard() {
     const { user } = useAuth();
     const first = user.name.split(' ')[0];
+    const [cards, setCards] = useState(null);
+
+    useEffect(() => { api('dashboard').then(d => setCards(d.cards)).catch(() => setCards([])); }, []);
 
     return (
         <>
             <section className="hero">
-                <div className="eyebrow">A-Solar Power Works | {user.role}</div>
-                <div className="hero-title">Welcome,<br /><span>{first}</span></div>
-                <p>Here is your workspace. Everything you need for procurement is on the left.</p>
+                <div className="eyebrow">A-Solar Power Works | {user.role} | {user.branch}</div>
+                <div className="hero-title">Welcome,<br />{first}</div>
+                <p>Here is where things stand today. Select a card to open it.</p>
             </section>
 
             <div className="row g-3 mb-4">
-                <div className="col-md-4"><div className="panel"><div className="label">Role</div><div className="value">{user.role}</div></div></div>
-                <div className="col-md-4"><div className="panel"><div className="label">Branch</div><div className="value">{user.branch}</div></div></div>
-                <div className="col-md-4"><div className="panel"><div className="label">Access</div><div className="value">{user.is_head_office ? 'All branches' : 'Own branch'}</div></div></div>
+                {!cards && <div className="col-12"><div className="spinner-border text-success" role="status" /></div>}
+                {cards && cards.map(c => (
+                    <div key={c.key} className="col-lg-3 col-md-6">
+                        <Link to={c.link} className="panel stat-card d-block text-decoration-none">
+                            <div className="label">{c.label}</div>
+                            <div className={'stat-value' + (c.value > 0 && /exception|waiting|returned|over/i.test(c.label) ? ' attention' : '')}>{c.value}</div>
+                        </Link>
+                    </div>
+                ))}
             </div>
 
             <h5 className="mb-3">What you will do here</h5>
