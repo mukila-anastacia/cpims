@@ -162,7 +162,7 @@ export default function QuotationCompare() {
             )}
 
             {choose && (
-                <div className="panel mb-4" style={{ borderLeft: '4px solid var(--accent)' }}>
+                <div className="panel mb-4" data-emphasis="true">
                     <h5 className="mb-2">Select {choose.vendor}</h5>
                     <p className="mb-2">Total {kes(choose.total)}{lowest !== null && choose.total > lowest + 0.004 ? `, which is ${kes(choose.total - lowest)} above the lowest quotation.` : ', the lowest quotation.'}</p>
                     {lowest !== null && choose.total > lowest + 0.004 && (
@@ -245,7 +245,7 @@ export default function QuotationCompare() {
             </div>
 
             {hasSelected && !locked && canEdit && (
-                <div className="panel mb-4" style={{ borderLeft: '4px solid var(--accent)' }}>
+                <div className="panel mb-4" data-emphasis="true">
                     <h5 className="mb-2">Ready to order</h5>
                     <p className="mb-3">A vendor is selected. Issue the purchase order to send the request on to delivery.</p>
                     {orderMsg && <div className="alert alert-danger py-2">{orderMsg}</div>}

@@ -64,11 +64,7 @@ export default function Layout({ children }) {
                 <div className="d-flex align-items-center gap-3">
                     <button className="btn btn-sm btn-outline-light" onClick={flip}>{theme === 'dark' ? 'Light mode' : 'Dark mode'}</button>
                     <Bell />
-                    <div className="text-end lh-sm">
-                        <div className="who">{user.name}</div>
-                        <small className="text-white-50">{user.role} | {user.branch}</small>
-                    </div>
-                    <button className="btn btn-sm btn-outline-light" onClick={logout}>Log out</button>
+                    <button className="btn btn-sm btn-outline-light logout-top" onClick={logout}>Log out</button>
                 </div>
             </header>
             <div className="shell">
@@ -82,6 +78,8 @@ export default function Layout({ children }) {
                             <span>{label}</span><span className="soon">Soon</span>
                         </div>
                     ))}
+                    <div className="nav-divider" />
+                    <button type="button" className="item logout" onClick={logout}>Log out</button>
                 </nav>
                 <main className="content">{children}</main>
             </div>

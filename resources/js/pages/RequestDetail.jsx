@@ -97,7 +97,7 @@ export default function RequestDetail() {
             </div>
 
             {r.can_decide && (
-                <div className="panel mb-3" style={{ borderLeft: '4px solid var(--accent)' }}>
+                <div className="panel mb-3" data-emphasis="true">
                     <h5 className="fw-semibold mb-2">Your decision</h5>
                     <p className="text-secondary small">You are approving at level {r.current_level}. A comment is required to return or reject.</p>
                     {formError && <div className="alert alert-danger py-2">{formError}</div>}

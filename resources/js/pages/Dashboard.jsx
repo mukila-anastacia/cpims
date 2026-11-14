@@ -6,7 +6,7 @@ import { TASKS } from '../menu';
 
 export default function Dashboard() {
     const { user } = useAuth();
-    const first = user.name.split(' ')[0];
+    
     const [cards, setCards] = useState(null);
 
     useEffect(() => { api('dashboard').then(d => setCards(d.cards)).catch(() => setCards([])); }, []);
@@ -14,12 +14,11 @@ export default function Dashboard() {
     return (
         <>
             <section className="hero">
-                <div className="eyebrow">A-Solar Power Works | {user.role} | {user.branch}</div>
-                <div className="hero-title">Welcome,<br />{first}</div>
-                <p>Here is where things stand today. Select a card to open it.</p>
+                <div className="hero-title">Welcome,<br />{user.name}</div>
+                <p>{user.role} at {user.branch}.</p>
             </section>
 
-            <div className="row g-3 mb-4">
+            <div className="row g-3">
                 {!cards && <div className="col-12"><div className="spinner-border text-success" role="status" /></div>}
                 {cards && cards.map(c => (
                     <div key={c.key} className="col-lg-3 col-md-6">
@@ -31,8 +30,10 @@ export default function Dashboard() {
                 ))}
             </div>
 
-            <h5 className="mb-3">What you will do here</h5>
-            {(TASKS[user.role] ?? []).map(t => <div key={t} className="task">{t}</div>)}
+            <h5>What you will do here</h5>
+            <div>
+                {(TASKS[user.role] ?? []).map(t => <div key={t} className="task">{t}</div>)}
+            </div>
         </>
     );
 }

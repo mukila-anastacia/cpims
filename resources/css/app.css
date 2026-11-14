@@ -162,3 +162,70 @@ h5, .panel h5 { font-weight: 700; text-transform: uppercase; letter-spacing: .06
 .stat-value.attention { color: var(--accent-dark); }
 .bar-track { height: 10px; background: var(--hover); border-radius: 5px; overflow: hidden; }
 .bar-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--green)); border-radius: 5px; }
+
+/* ===== Design cleanup ===== */
+:root { --radius: 8px; --muted: #4f6073; --section: #a84f06; }
+[data-bs-theme="dark"] { --muted: #a9b9cc; --section: #f28c28; --bs-secondary-color: #a9b9cc; }
+
+/* Buttons and cards change state instantly: no fades, no lifts */
+*, *::before, *::after { transition: none !important; }
+.stat-card:hover { transform: none; }
+
+/* Contrast */
+.text-secondary, .form-text { color: var(--muted) !important; }
+.section-title { color: var(--section); }
+.sidebar .item.disabled { opacity: 1; color: var(--muted); }
+
+/* No coloured edges on cards or list items */
+.task { border: 1px solid var(--border); }
+.sidebar .item, .sidebar .item.active { border-left: 0; }
+.sidebar .item.active, .sidebar .item.active:hover { background: var(--blue); color: #fff; font-weight: 600; }
+.note.unread { border-left: 0; background: rgba(242, 140, 40, .14); font-weight: 600; }
+.compare th.sel, .compare td.sel:not(.lowest) { box-shadow: none; background: rgba(46, 158, 107, .10); }
+[data-emphasis] { background: var(--hover); }
+.bar-fill { background: var(--blue); }
+
+/* One skin for the stock Bootstrap parts (the login page is not touched) */
+.shell .btn, .topbar .btn { border-radius: var(--radius); box-shadow: none !important; }
+.shell .form-control, .shell .form-select { border-radius: var(--radius); border-color: var(--border); }
+.shell .form-control:focus, .shell .form-select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(29, 95, 184, .22); }
+[data-bs-theme="dark"] .shell .form-control:focus, [data-bs-theme="dark"] .shell .form-select:focus { border-color: #7db0f5; box-shadow: 0 0 0 3px rgba(125, 176, 245, .3); }
+.shell .form-label { font-weight: 600; }
+.shell .alert { border-radius: var(--radius); }
+.shell .badge { border-radius: 6px; font-weight: 600; letter-spacing: .02em; }
+.shell .progress { border-radius: 6px; background: var(--hover); }
+.panel { border-radius: 12px; padding: 1.5rem; }
+.table > :not(caption) > * > * { padding: .75rem 1rem; }
+.table thead th { border-bottom: 2px solid var(--border); }
+
+/* Spacing: blocks are 24px apart, titles sit 8px above their subtitle */
+.content { display: flex; flex-direction: column; gap: 1.5rem; }
+.content > * { margin-top: 0 !important; margin-bottom: 0 !important; }
+.content > h2 + p, .content > .d-flex + p.text-secondary { margin-top: -1rem !important; }
+.content > nav.small + * { margin-top: -.5rem !important; }
+.task + .task { margin-top: -.5rem !important; }
+.form-card hr { margin: 1.5rem 0; }
+.form-card .section-title { margin-bottom: 1rem; }
+
+/* Menu: Log out is the last item. On narrow screens it moves to the top bar */
+.sidebar .nav-divider { height: 1px; background: var(--border); margin: 1rem 0 .5rem; }
+.sidebar button.item { width: 100%; background: none; border: 0; text-align: left; color: var(--muted); }
+.sidebar button.item:hover { background: var(--hover); color: var(--text); }
+.logout-top { display: none; }
+@media (max-width: 860px) { .logout-top { display: inline-block; } }
+
+/* ===== Final tweaks ===== */
+
+/* Welcome box: the same dark blue as the cards and the side menu */
+.hero { background: #12233a; }
+
+/* Dashboard cards: no hover or click effect at all */
+.stat-card, .stat-card:hover, .stat-card:active, .stat-card:focus { border-color: var(--border); background: var(--surface); color: var(--text); outline: none; }
+.stat-card:focus-visible { outline: 2px solid #7db0f5; outline-offset: 2px; }
+
+/* Page titles: same colour as the rest of the text, no underline */
+h2 { color: var(--text); padding-bottom: 0; }
+h2::after { content: none; display: none; }
+
+/* Top bar: thin neutral line */
+.topbar { border-bottom: 1px solid rgba(255, 255, 255, .14); }
