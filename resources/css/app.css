@@ -215,6 +215,8 @@ h5, .panel h5 { font-weight: 700; text-transform: uppercase; letter-spacing: .06
 @media (max-width: 860px) { .logout-top { display: inline-block; } }
 
 /* ===== Final tweaks ===== */
+:root { --strong: #1b2a3d; }
+[data-bs-theme="dark"] { --strong: #ffffff; --brand: #ffffff; }
 
 /* Welcome box: the same dark blue as the cards and the side menu */
 .hero { background: #12233a; }
@@ -223,9 +225,21 @@ h5, .panel h5 { font-weight: 700; text-transform: uppercase; letter-spacing: .06
 .stat-card, .stat-card:hover, .stat-card:active, .stat-card:focus { border-color: var(--border); background: var(--surface); color: var(--text); outline: none; }
 .stat-card:focus-visible { outline: 2px solid #7db0f5; outline-offset: 2px; }
 
-/* Page titles: same colour as the rest of the text, no underline */
-h2 { color: var(--text); padding-bottom: 0; }
+/* Page titles: no underline, white in dark mode */
+h2 { color: var(--strong); padding-bottom: 0; }
 h2::after { content: none; display: none; }
 
 /* Top bar: thin neutral line */
 .topbar { border-bottom: 1px solid rgba(255, 255, 255, .14); }
+
+/* Side menu: the selected item is bold white text on a quiet fill, no blue block */
+.sidebar .item.active, .sidebar .item.active:hover { background: var(--hover); color: var(--strong); font-weight: 700; }
+.sidebar .item:focus { outline: none; }
+.sidebar .item:focus-visible { outline: 2px solid #7db0f5; outline-offset: -2px; }
+
+/* Login page: no glow and no orange line on the fields or the button */
+.login-card .form-floating > .form-control:focus,
+.login-card .form-floating > .form-control:focus-visible { border-color: rgba(255, 255, 255, .18); box-shadow: none; outline: none; background: rgba(255, 255, 255, .06); }
+.login-card .btn, .login-card .btn:hover, .login-card .btn:focus, .login-card .btn:active { box-shadow: none !important; outline: none; }
+.login-card .btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.pw-toggle:focus, .pw-toggle:focus-visible { outline: none; box-shadow: none; }
