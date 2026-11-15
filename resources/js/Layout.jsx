@@ -4,7 +4,6 @@ import { api } from './api';
 import { useAuth } from './AuthContext';
 import { fmtDate } from './format';
 import { MENUS } from './menu';
-import { applyTheme, getTheme } from './theme';
 
 function Bell() {
     const [open, setOpen] = useState(false);
@@ -48,21 +47,13 @@ function Bell() {
 
 export default function Layout({ children }) {
     const { user, logout } = useAuth();
-    const [theme, setTheme] = useState(getTheme());
     const items = MENUS[user.role] ?? [{ label: 'Dashboard', to: '/' }];
-
-    function flip() {
-        const next = theme === 'dark' ? 'light' : 'dark';
-        applyTheme(next);
-        setTheme(next);
-    }
 
     return (
         <>
             <header className="topbar">
                 <div className="brand">A-Solar Power Works <small>Procurement System</small></div>
                 <div className="d-flex align-items-center gap-3">
-                    <button className="btn btn-sm btn-outline-light" onClick={flip}>{theme === 'dark' ? 'Light mode' : 'Dark mode'}</button>
                     <Bell />
                     <button className="btn btn-sm btn-outline-light logout-top" onClick={logout}>Log out</button>
                 </div>
