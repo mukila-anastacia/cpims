@@ -102,7 +102,7 @@ a { color: var(--link); }
 /* Fonts: Barlow Condensed for headings, Manrope for everything else */
 :root {
   --font-body: 'Manrope Variable', 'Segoe UI', system-ui, sans-serif;
-  --font-head: 'Barlow Condensed', 'Arial Narrow', 'Segoe UI', sans-serif;
+  --font-head: 'Oswald Variable', 'Arial Narrow', 'Segoe UI', sans-serif;
   --bs-body-font-family: var(--font-body);
 }
 body { font-family: var(--font-body); font-size: .95rem; -webkit-font-smoothing: antialiased; }
@@ -246,7 +246,7 @@ h2::after { content: none; display: none; }
 
 /* ===== Type and hover ===== */
 :root {
-  --font-head: 'Urbanist Variable', 'Segoe UI', system-ui, sans-serif;
+  --font-head: 'Oswald Variable', 'Segoe UI', system-ui, sans-serif;
   --font-body: 'Manrope Variable', 'Segoe UI', system-ui, sans-serif;
 }
 

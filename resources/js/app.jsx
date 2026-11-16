@@ -1,4 +1,4 @@
-import '@fontsource-variable/urbanist';
+import '@fontsource-variable/oswald';
 import '@fontsource-variable/manrope';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/app.css';
