@@ -1,6 +1,4 @@
-import '@fontsource/barlow-condensed/600.css';
-import '@fontsource/barlow-condensed/700.css';
-import '@fontsource/barlow-condensed/800.css';
+import '@fontsource-variable/urbanist';
 import '@fontsource-variable/manrope';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/app.css';

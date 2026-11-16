@@ -52,7 +52,7 @@ export default function Layout({ children }) {
     return (
         <>
             <header className="topbar">
-                <div className="brand">A-Solar Power Works <small>Procurement System</small></div>
+                <div className="brand"><span className="brand-name">A-Solar Power Works</span><span className="brand-sub">Procurement System</span></div>
                 <div className="d-flex align-items-center gap-3">
                     <Bell />
                     <button className="btn btn-sm btn-outline-light logout-top" onClick={logout}>Log out</button>

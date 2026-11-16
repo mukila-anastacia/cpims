@@ -243,3 +243,47 @@ h2::after { content: none; display: none; }
 .login-card .btn, .login-card .btn:hover, .login-card .btn:focus, .login-card .btn:active { box-shadow: none !important; outline: none; }
 .login-card .btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 .pw-toggle:focus, .pw-toggle:focus-visible { outline: none; box-shadow: none; }
+
+/* ===== Type and hover ===== */
+:root {
+  --font-head: 'Urbanist Variable', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Manrope Variable', 'Segoe UI', system-ui, sans-serif;
+}
+
+/* Headings: Urbanist in normal capitalisation */
+h2 { font-size: 2.5rem; font-weight: 700 !important; text-transform: none; letter-spacing: -.02em; line-height: 1.1; }
+h5, .panel h5 { font-size: 1.25rem; font-weight: 700; text-transform: none; letter-spacing: -.01em; }
+.table th { font-size: .9rem; font-weight: 700; text-transform: none; letter-spacing: 0; }
+.stat-value, .panel .value { font-weight: 700; letter-spacing: -.02em; }
+.hero .hero-title { font-weight: 600; text-transform: none; letter-spacing: -.03em; line-height: 1.02; font-size: clamp(3rem, 7vw, 5.25rem); }
+
+/* Top bar: name above, "Procurement System" in white below it */
+.topbar .brand { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; text-transform: none; letter-spacing: 0; font-size: 1rem; font-weight: 700; line-height: 1.15; }
+.topbar .brand-name { font-family: var(--font-head); font-size: 1.4rem; font-weight: 700; letter-spacing: -.01em; color: #fff; }
+.topbar .brand-sub { font-family: var(--font-body); font-size: .85rem; font-weight: 500; color: #fff; }
+
+/* No hover or press effects: nothing changes colour under the cursor */
+a:hover, a:active { color: var(--link); }
+.btn:hover, .btn:active, .btn:focus, .btn.active, .btn.show,
+:not(.btn-check) + .btn:hover, :not(.btn-check) + .btn:active,
+.btn:first-child:hover, .btn:first-child:active {
+  color: var(--bs-btn-color) !important;
+  background-color: var(--bs-btn-bg) !important;
+  border-color: var(--bs-btn-border-color) !important;
+  box-shadow: none !important;
+}
+.btn:focus-visible { outline: 2px solid #7db0f5; outline-offset: 2px; }
+html .btn.btn-brand, html .btn.btn-brand:hover, html .btn.btn-brand:active, html .btn.btn-brand:focus {
+  background-color: var(--blue) !important; border-color: var(--blue) !important; color: #fff !important;
+}
+html .btn.btn-accent, html .btn.btn-accent:hover, html .btn.btn-accent:active, html .btn.btn-accent:focus {
+  background-color: var(--accent) !important; border-color: var(--accent) !important; color: #0b2a4a !important;
+}
+.table { --bs-table-hover-bg: transparent; --bs-table-hover-color: var(--bs-body-color); }
+.sidebar .item:hover { background: transparent; color: var(--muted); }
+.sidebar .item.active:hover { background: var(--hover); color: var(--strong); }
+.sidebar button.item:hover { background: none; color: var(--muted); }
+.sidebar .item.disabled:hover { background: transparent; color: var(--muted); }
+.note:hover { background: transparent; }
+.note.unread:hover { background: rgba(242, 140, 40, .14); }
+.pw-toggle:hover { color: #a9bdd6; }
