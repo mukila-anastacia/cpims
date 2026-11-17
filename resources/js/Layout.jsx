@@ -61,8 +61,8 @@ export default function Layout({ children }) {
                     <span className="brand-sub">Procurement System</span>
                 </div>
                 <div className="d-flex align-items-center gap-2">
-                    <button type="button" className="btn btn-sm btn-outline-light menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-controls="main-menu">
-                        {menuOpen ? 'Close menu' : 'Menu'}
+                    <button type="button" className="btn btn-sm btn-outline-light menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-controls="main-menu" aria-label={menuOpen ? 'Close menu' : 'Open menu'}>
+                        <span className="dots" aria-hidden="true"><i /><i /><i /></span>
                     </button>
                     <Bell />
                 </div>

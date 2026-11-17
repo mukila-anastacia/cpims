@@ -1,5 +1,5 @@
-import '@fontsource-variable/oswald';
-import '@fontsource-variable/manrope';
+import '@fontsource-variable/playfair-display';
+import '@fontsource-variable/dm-sans';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/app.css';
 import { createRoot } from 'react-dom/client';
