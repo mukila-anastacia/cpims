@@ -48,7 +48,6 @@ class InvoiceTest extends TestCase
         return $id;
     }
 
-    /** An order from vendor A at the given price; returns the purchase order id. */
     private function order(float $price = 1900, float $qty = 10): int
     {
         $id = $this->approved($qty);

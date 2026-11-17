@@ -38,7 +38,6 @@ class ApprovalTest extends TestCase
         ];
     }
 
-    /** Raise and submit a request as a requester; returns its id. */
     private function submitted(string $requester, string $item, float $cost): int
     {
         $user = $this->user($requester);

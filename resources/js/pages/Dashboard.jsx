@@ -6,10 +6,15 @@ import { TASKS } from '../menu';
 
 export default function Dashboard() {
     const { user } = useAuth();
-    
     const [cards, setCards] = useState(null);
+    const [error, setError] = useState('');
 
-    useEffect(() => { api('dashboard').then(d => setCards(d.cards)).catch(() => setCards([])); }, []);
+    const load = () => {
+        setError('');
+        setCards(null);
+        api('dashboard').then(d => setCards(d.cards)).catch(e => setError(e.message));
+    };
+    useEffect(() => { load(); }, []);
 
     return (
         <>
@@ -19,7 +24,15 @@ export default function Dashboard() {
             </section>
 
             <div className="row g-3">
-                {!cards && <div className="col-12"><div className="spinner-border text-success" role="status" /></div>}
+                {error && (
+                    <div className="col-12">
+                        <div className="alert alert-danger d-flex justify-content-between align-items-center mb-0">
+                            <span>{error}</span>
+                            <button className="btn btn-sm btn-outline-light" onClick={load}>Try again</button>
+                        </div>
+                    </div>
+                )}
+                {!cards && !error && <div className="col-12"><div className="spinner-border text-success" role="status" /></div>}
                 {cards && cards.map(c => (
                     <div key={c.key} className="col-lg-3 col-md-6">
                         <Link to={c.link} className="panel stat-card d-block text-decoration-none">
@@ -31,7 +44,7 @@ export default function Dashboard() {
             </div>
 
             <h5>What you will do here</h5>
-            <div>
+            <div className="tasks">
                 {(TASKS[user.role] ?? []).map(t => <div key={t} className="task">{t}</div>)}
             </div>
         </>

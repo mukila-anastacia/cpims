@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { api } from './api';
 import { useAuth } from './AuthContext';
 import { fmtDate } from './format';
@@ -25,7 +25,7 @@ function Bell() {
     }
 
     return (
-        <div className="position-relative">
+        <div className="bell">
             <button className="btn btn-sm btn-outline-light" onClick={toggle} aria-label="Notifications">
                 Notifications {notes.unread > 0 && <span className="badge text-bg-warning ms-1">{notes.unread}</span>}
             </button>
@@ -47,27 +47,32 @@ function Bell() {
 
 export default function Layout({ children }) {
     const { user, logout } = useAuth();
+    const [menuOpen, setMenuOpen] = useState(false);
+    const { pathname } = useLocation();
     const items = MENUS[user.role] ?? [{ label: 'Dashboard', to: '/' }];
+
+    useEffect(() => { setMenuOpen(false); }, [pathname]);
 
     return (
         <>
             <header className="topbar">
-                <div className="brand"><span className="brand-name">A-Solar Power Works</span><span className="brand-sub">Procurement System</span></div>
-                <div className="d-flex align-items-center gap-3">
+                <div className="brand">
+                    <span className="brand-name">A-Solar Power Works</span>
+                    <span className="brand-sub">Procurement System</span>
+                </div>
+                <div className="d-flex align-items-center gap-2">
+                    <button type="button" className="btn btn-sm btn-outline-light menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-controls="main-menu">
+                        {menuOpen ? 'Close menu' : 'Menu'}
+                    </button>
                     <Bell />
-                    <button className="btn btn-sm btn-outline-light logout-top" onClick={logout}>Log out</button>
                 </div>
             </header>
             <div className="shell">
-                <nav className="sidebar" aria-label="Main menu">
-                    {items.map(({ label, to }) => to ? (
+                <nav id="main-menu" className={'sidebar' + (menuOpen ? ' open' : '')} aria-label="Main menu">
+                    {items.map(({ label, to }) => (
                         <NavLink key={label} to={to} end className={({ isActive }) => 'item' + (isActive ? ' active' : '')}>
                             <span>{label}</span>
                         </NavLink>
-                    ) : (
-                        <div key={label} className="item disabled">
-                            <span>{label}</span><span className="soon">Soon</span>
-                        </div>
                     ))}
                     <div className="nav-divider" />
                     <button type="button" className="item logout" onClick={logout}>Log out</button>

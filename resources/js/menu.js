@@ -1,4 +1,3 @@
-// `to: null` means the screen is not built yet
 const D = { label: 'Dashboard', to: '/' };
 const APPROVALS = { label: 'Approvals', to: '/approvals' };
 const VENDORS = { label: 'Vendors', to: '/vendors' };
@@ -9,7 +8,6 @@ const INVOICES = { label: 'Invoices', to: '/invoices' };
 const BUDGETS = { label: 'Budgets', to: '/budgets' };
 const REPORTS = { label: 'Reports', to: '/reports' };
 const AUDIT = { label: 'Audit log', to: '/audit-log' };
-const soon = (label) => ({ label, to: null });
 
 export const MENUS = {
     'Requester': [D, { label: 'New request', to: '/requests/new' }, { label: 'My requests', to: '/requests' }, { label: 'Receipts', to: '/orders' }],
@@ -17,7 +15,7 @@ export const MENUS = {
     'Procurement Administrator': [D, APPROVALS, { label: 'Requests', to: '/requests' }, QUOTES, ORDERS, INVOICES, VENDORS, ITEMS, REPORTS],
     'Finance Officer': [D, APPROVALS, { label: 'Requests', to: '/requests' }, QUOTES, ORDERS, INVOICES, BUDGETS, VENDORS, REPORTS],
     'Head Office Manager': [D, APPROVALS, { label: 'Requests', to: '/requests' }, QUOTES, ORDERS, INVOICES, BUDGETS, VENDORS, REPORTS, AUDIT],
-    'System Administrator': [D, { label: 'Users and roles', to: '/users' }, AUDIT, soon('Settings')],
+    'System Administrator': [D, { label: 'Users and roles', to: '/users' }, AUDIT],
 };
 
 export const TASKS = {

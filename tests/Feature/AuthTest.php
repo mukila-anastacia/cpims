@@ -61,10 +61,10 @@ class AuthTest extends TestCase
         $requester = User::where('username', 'amina')->first();
         $admin = User::where('username', 'admin')->first();
 
-        $this->actingAs($requester)->getJson('/api/admin/ping')->assertStatus(403);
+        $this->actingAs($requester)->getJson('/api/users')->assertStatus(403);
         $this->assertDatabaseHas('audit_logs', ['action' => 'ACCESS_DENIED', 'user_id' => $requester->id]);
 
-        $this->actingAs($admin)->getJson('/api/admin/ping')->assertOk();
+        $this->actingAs($admin)->getJson('/api/users')->assertOk();
     }
 
     public function test_audit_log_cannot_be_changed_or_deleted(): void

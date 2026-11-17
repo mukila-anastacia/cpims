@@ -52,17 +52,20 @@ class VendorController extends Controller
     private function validated(Request $request, ?int $ignoreId = null): array
     {
         $request->merge(['tax_pin' => strtoupper(trim((string) $request->input('tax_pin')))]);
+        $phone = preg_replace('/[\s().-]+/', '', (string) $request->input('phone'));
+        $request->merge(['phone' => $phone === '' ? null : $phone]);
 
         return $request->validate([
             'name' => ['required', 'string', 'max:120'],
             'contact_person' => ['nullable', 'string', 'max:80'],
-            'phone' => ['nullable', 'string', 'max:30'],
+            'phone' => ['nullable', 'regex:/^(?:\+?254|0)[17]\d{8}$/'],
             'email' => ['nullable', 'email', 'max:120'],
             'tax_pin' => ['required', 'regex:/^[A-Z]\d{9}[A-Z]$/', Rule::unique('vendors', 'tax_pin')->ignore($ignoreId)],
             'status' => ['sometimes', 'in:active,blocked'],
         ], [
             'tax_pin.regex' => 'Enter a valid KRA PIN, for example P000000001A.',
             'tax_pin.unique' => 'A vendor with this PIN already exists.',
+            'phone.regex' => 'Enter a valid Kenyan phone number, for example 0712345678.',
         ]);
     }
 

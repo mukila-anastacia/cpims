@@ -46,7 +46,6 @@ class ReportTest extends TestCase
         $this->actingAs($this->user('manager.kasarani'))->postJson("/api/requests/$id/decision", ['decision' => 'approve'])->assertOk();
     }
 
-    /** Quote from SunTech at 19,000, select it and issue the order. */
     private function order(int $id): int
     {
         $proc = $this->user('procurement');

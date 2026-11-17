@@ -67,7 +67,6 @@ class OrderTest extends TestCase
         ]);
     }
 
-    /** Approved request (KES 20,000, 10 metres) with a quotation from vendor A selected. */
     private function ready(float $price = 1900): int
     {
         $id = $this->approved('Solar cable 6mm', 10, 2000);

@@ -120,7 +120,7 @@ class RequestController extends Controller
             'lines' => ['required', 'array', 'min:1', 'max:50'],
             'lines.*.item_id' => ['required', 'exists:items,id'],
             'lines.*.quantity' => ['required', 'numeric', 'gt:0', 'max:100000'],
-            'lines.*.unit_cost_est' => ['required', 'numeric', 'gte:0', 'max:100000000'],
+            'lines.*.unit_cost_est' => ['required', 'numeric', 'gt:0', 'max:100000000'],
             'lines.*.note' => ['nullable', 'string', 'max:200'],
         ]);
 

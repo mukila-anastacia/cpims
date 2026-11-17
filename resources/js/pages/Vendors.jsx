@@ -85,7 +85,8 @@ export default function Vendors() {
                         </div>
                         <div className="col-md-4">
                             <label className="form-label" htmlFor="vt">Phone</label>
-                            <input id="vt" className="form-control" value={form.phone} onChange={e => set('phone', e.target.value)} />
+                            <input id="vt" className={'form-control' + (err('phone') ? ' is-invalid' : '')} placeholder="0712345678" value={form.phone} onChange={e => set('phone', e.target.value)} />
+                            <div className="invalid-feedback">{err('phone')}</div>
                         </div>
                         <div className="col-md-4">
                             <label className="form-label" htmlFor="ve">Email</label>

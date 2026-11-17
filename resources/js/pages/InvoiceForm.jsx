@@ -47,7 +47,7 @@ export default function InvoiceForm() {
         } catch (e2) {
             setErrors(e2.errors || {});
             const first = Object.values(e2.errors || {})[0]?.[0];
-            setMessage(first ? 'Please correct the problem below.' : e2.message);
+            setMessage(first || e2.message);
         } finally { setBusy(false); }
     }
 
@@ -61,6 +61,7 @@ export default function InvoiceForm() {
             )}
 
             {!orders && !message && <div className="spinner-border text-success" role="status" />}
+            {!orders && message && <div className="alert alert-danger">{message}</div>}
 
             {orders && orders.length > 0 && (
                 <form className="panel form-card mb-4" onSubmit={submit} noValidate>

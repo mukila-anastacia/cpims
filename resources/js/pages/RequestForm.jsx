@@ -4,6 +4,7 @@ import { api } from '../api';
 import { kes } from '../format';
 
 const emptyLine = { item_id: '', quantity: 1, unit_cost_est: '', note: '' };
+const today = () => new Date().toLocaleDateString('en-CA');
 
 export default function RequestForm() {
     const { id } = useParams();
@@ -62,12 +63,33 @@ export default function RequestForm() {
     const addLine = () => setLines(ls => [...ls, { ...emptyLine }]);
     const removeLine = (i) => setLines(ls => (ls.length > 1 ? ls.filter((_, n) => n !== i) : ls));
 
+    function check(forSubmit) {
+        const e = {};
+        if (!categoryId) e.category_id = ['Choose a category.'];
+        if (neededBy && neededBy < today()) e.needed_by = ['Choose today or a later date.'];
+        const chosen = lines.map(l => l.item_id).filter(Boolean);
+        if (new Set(chosen).size !== chosen.length) e.lines = ['The same item is on two rows. Combine them into one.'];
+        lines.forEach((l, i) => {
+            if (!l.item_id) e[`lines.${i}.item_id`] = ['Choose an item, or remove this row.'];
+            if (!(Number(l.quantity) > 0)) e[`lines.${i}.quantity`] = ['Enter a quantity above zero.'];
+            if (!(Number(l.unit_cost_est) > 0)) e[`lines.${i}.unit_cost_est`] = ['Enter a cost above zero.'];
+        });
+        if (forSubmit && !justification.trim()) e.justification = ['Enter a justification.'];
+        return e;
+    }
+
+    function reject(e) {
+        setErrors(e);
+        setMessage('Please correct the fields marked below.');
+        window.scrollTo(0, 0);
+    }
+
     async function save() {
         const body = {
             category_id: categoryId,
             needed_by: neededBy || null,
             justification,
-            lines: lines.filter(l => l.item_id).map(l => ({ item_id: l.item_id, quantity: l.quantity, unit_cost_est: l.unit_cost_est || 0, note: l.note || null })),
+            lines: lines.map(l => ({ item_id: l.item_id, quantity: l.quantity, unit_cost_est: l.unit_cost_est, note: l.note || null })),
         };
         const d = savedId
             ? await api(`requests/${savedId}`, { method: 'PUT', body })
@@ -87,20 +109,26 @@ export default function RequestForm() {
     }
 
     async function saveDraft() {
-        setBusy(true); setMessage(''); setErrors({});
+        setMessage(''); setErrors({});
+        const e = check(false);
+        if (Object.keys(e).length) { reject(e); return; }
+        setBusy(true);
         try {
             const rid = await save();
             navigate(`/requests/${rid}`, { state: { flash: 'Draft saved.' } });
-        } catch (e) { fail(e); } finally { setBusy(false); }
+        } catch (e2) { fail(e2); } finally { setBusy(false); }
     }
 
     async function submit() {
-        setBusy(true); setMessage(''); setErrors({});
+        setMessage(''); setErrors({});
+        const e = check(true);
+        if (Object.keys(e).length) { reject(e); return; }
+        setBusy(true);
         try {
             const rid = await save();
             const d = await api(`requests/${rid}/submit`, { method: 'POST', body: { duplicate_justification: dupText } });
             navigate(`/requests/${rid}`, { state: { flash: `Request ${d.data.request_no} submitted for approval.` } });
-        } catch (e) { fail(e); } finally { setBusy(false); }
+        } catch (e2) { fail(e2); } finally { setBusy(false); }
     }
 
     if (loading) return <div className="spinner-border text-success" role="status" />;
@@ -108,7 +136,7 @@ export default function RequestForm() {
     return (
         <>
             <nav className="mb-2 small"><Link to="/requests">Requests</Link> / {requestNo || 'New'}</nav>
-            <h2 className="fw-semibold mb-3" style={{ color: 'var(--brand)' }}>{id ? `Edit ${requestNo}` : 'New purchase request'}</h2>
+            <h2 className="mb-3">{id ? `Edit ${requestNo}` : 'New purchase request'}</h2>
 
             <div className="panel form-card mb-4">
                 {message && <div className="alert alert-danger py-2" role="alert">{message}</div>}
@@ -125,12 +153,12 @@ export default function RequestForm() {
                     </div>
                     <div className="col-md-4">
                         <label className="form-label" htmlFor="need">Needed by</label>
-                        <input id="need" type="date" className={'form-control' + (fieldError('needed_by') ? ' is-invalid' : '')} min={new Date().toISOString().slice(0, 10)} value={neededBy} onChange={e => setNeededBy(e.target.value)} />
+                        <input id="need" type="date" className={'form-control' + (fieldError('needed_by') ? ' is-invalid' : '')} min={today()} value={neededBy} onChange={e => setNeededBy(e.target.value)} />
                         <div className="invalid-feedback">{fieldError('needed_by')}</div>
                     </div>
                     <div className="col-md-4">
                         <div className="form-label">Remaining budget</div>
-                        <div className="fw-semibold pt-1" style={{ color: 'var(--brand)' }}>
+                        <div className="fw-semibold pt-1">
                             {!categoryId ? 'Choose a category' : budget ? (budget.has_budget ? kes(budget.remaining) : 'No budget set') : '...'}
                         </div>
                         {budget && budget.has_budget && total > budget.remaining && (
@@ -197,7 +225,7 @@ export default function RequestForm() {
                 <div className="d-flex flex-wrap justify-content-between align-items-center gap-3">
                     <div>
                         <span className="text-secondary small text-uppercase me-2">Estimated total</span>
-                        <span className="fs-5 fw-semibold" style={{ color: 'var(--brand)' }}>{kes(total)}</span>
+                        <span className="fs-5 fw-semibold">{kes(total)}</span>
                     </div>
                     <div className="d-flex gap-2">
                         <Link to="/requests" className="btn btn-link">Cancel</Link>

@@ -34,7 +34,6 @@ class QuotationTest extends TestCase
         return Vendor::where('tax_pin', $pin)->value('id');
     }
 
-    /** Raise a request as Amina and submit it. */
     private function submitted(string $item, float $qty, float $cost): int
     {
         $amina = $this->user('amina');
@@ -50,7 +49,6 @@ class QuotationTest extends TestCase
         return $id;
     }
 
-    /** Raise, submit and fully approve a request. */
     private function approved(string $item, float $qty, float $cost): int
     {
         $id = $this->submitted($item, $qty, $cost);
