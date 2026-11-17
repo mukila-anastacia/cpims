@@ -20,7 +20,7 @@ export default function Orders() {
 
     return (
         <>
-            <h2>{receiver ? 'Receipts' : 'Orders'}</h2>
+            <h2>{receiver ? 'Deliveries' : 'Purchase orders'}</h2>
             <p className="text-secondary mb-4">
                 {receiver ? 'Orders for your branch. Open one to record a delivery.' : 'Purchase orders and their delivery progress.'}
             </p>

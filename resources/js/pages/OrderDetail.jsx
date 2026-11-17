@@ -59,7 +59,7 @@ export default function OrderDetail() {
 
     return (
         <>
-            <nav className="mb-2 small no-print"><Link to="/orders">Orders</Link> / {o.po_no}</nav>
+            <nav className="mb-2 small no-print"><Link to="/orders">Purchase orders</Link> / {o.po_no}</nav>
             {flash && <div className="alert alert-success py-2 no-print">{flash}</div>}
 
             <div className="d-flex justify-content-between align-items-start mb-3 no-print">

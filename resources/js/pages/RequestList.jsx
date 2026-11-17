@@ -24,7 +24,7 @@ export default function RequestList() {
         <>
             <div className="d-flex justify-content-between align-items-center mb-3">
                 <h2 className="fw-semibold m-0" style={{ color: 'var(--brand)' }}>
-                    {user.role === 'Requester' ? 'My requests' : 'Requests'}
+                    {user.role === 'Requester' ? 'My purchase requests' : 'Purchase requests'}
                 </h2>
                 {user.role === 'Requester' && <Link to="/requests/new" className="btn btn-brand">New request</Link>}
             </div>

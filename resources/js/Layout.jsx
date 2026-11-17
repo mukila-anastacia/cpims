@@ -5,6 +5,15 @@ import { useAuth } from './AuthContext';
 import { fmtDate } from './format';
 import { MENUS } from './menu';
 
+function BellIcon() {
+    return (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M6 9a6 6 0 1 1 12 0c0 5 2 6.5 2 6.5H4S6 14 6 9Z" />
+            <path d="M10 19a2 2 0 0 0 4 0" />
+        </svg>
+    );
+}
+
 function Bell() {
     const [open, setOpen] = useState(false);
     const [notes, setNotes] = useState({ unread: 0, data: [] });
@@ -26,8 +35,9 @@ function Bell() {
 
     return (
         <div className="bell">
-            <button className="btn btn-sm btn-outline-light" onClick={toggle} aria-label="Notifications">
-                Notifications {notes.unread > 0 && <span className="badge text-bg-warning ms-1">{notes.unread}</span>}
+            <button type="button" className="icon-btn" onClick={toggle} aria-label={`Notifications, ${notes.unread} unread`} aria-expanded={open}>
+                <BellIcon />
+                {notes.unread > 0 && <span className="count">{notes.unread}</span>}
             </button>
             {open && (
                 <div className="notes-panel">
@@ -45,40 +55,61 @@ function Bell() {
     );
 }
 
+const initials = (name) => name.split(' ').filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+
 export default function Layout({ children }) {
     const { user, logout } = useAuth();
     const [menuOpen, setMenuOpen] = useState(false);
     const { pathname } = useLocation();
-    const items = MENUS[user.role] ?? [{ label: 'Dashboard', to: '/' }];
+    const sections = MENUS[user.role] ?? [{ label: 'Workspace', items: [{ label: 'Overview', to: '/' }] }];
+    const today = new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
     useEffect(() => { setMenuOpen(false); }, [pathname]);
 
     return (
-        <>
-            <header className="topbar">
-                <div className="brand">
-                    <span className="brand-name">A-Solar Power Works</span>
-                    <span className="brand-sub">Procurement System</span>
+        <div className="app">
+            <aside id="main-menu" className={'sidebar' + (menuOpen ? ' open' : '')} aria-label="Main menu">
+                <div className="side-brand">
+                    <div className="side-name">A-Solar Power Works</div>
+                    <div className="side-sub">Procurement</div>
                 </div>
-                <div className="d-flex align-items-center gap-2">
-                    <button type="button" className="btn btn-sm btn-outline-light menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-controls="main-menu" aria-label={menuOpen ? 'Close menu' : 'Open menu'}>
-                        <span className="dots" aria-hidden="true"><i /><i /><i /></span>
-                    </button>
-                    <Bell />
-                </div>
-            </header>
-            <div className="shell">
-                <nav id="main-menu" className={'sidebar' + (menuOpen ? ' open' : '')} aria-label="Main menu">
-                    {items.map(({ label, to }) => (
-                        <NavLink key={label} to={to} end className={({ isActive }) => 'item' + (isActive ? ' active' : '')}>
-                            <span>{label}</span>
-                        </NavLink>
-                    ))}
-                    <div className="nav-divider" />
+
+                {sections.map(s => (
+                    <div key={s.label} className="nav-group">
+                        <div className="nav-label">{s.label}</div>
+                        {s.items.map(({ label, to }) => (
+                            <NavLink key={label} to={to} end className={({ isActive }) => 'item' + (isActive ? ' active' : '')}>
+                                <span>{label}</span>
+                            </NavLink>
+                        ))}
+                    </div>
+                ))}
+
+                <div className="side-foot">
+                    <div className="user-block">
+                        <span className="avatar" aria-hidden="true">{initials(user.name)}</span>
+                        <div className="user-text">
+                            <div className="user-name">{user.name}</div>
+                            <div className="user-role">{user.role}</div>
+                        </div>
+                    </div>
                     <button type="button" className="item logout" onClick={logout}>Log out</button>
-                </nav>
+                </div>
+            </aside>
+            {menuOpen && <div className="scrim" onClick={() => setMenuOpen(false)} />}
+
+            <div className="main">
+                <header className="topbar">
+                    <div className="d-flex align-items-center gap-3">
+                        <button type="button" className="icon-btn menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-controls="main-menu" aria-label={menuOpen ? 'Close menu' : 'Open menu'}>
+                            <span className="dots" aria-hidden="true"><i /><i /><i /></span>
+                        </button>
+                        <span className="today">{today}</span>
+                    </div>
+                    <Bell />
+                </header>
                 <main className="content">{children}</main>
             </div>
-        </>
+        </div>
     );
 }

@@ -1,21 +1,25 @@
-const D = { label: 'Dashboard', to: '/' };
-const APPROVALS = { label: 'Approvals', to: '/approvals' };
-const VENDORS = { label: 'Vendors', to: '/vendors' };
-const ITEMS = { label: 'Items', to: '/items' };
-const QUOTES = { label: 'Quotations', to: '/quotations' };
-const ORDERS = { label: 'Orders', to: '/orders' };
-const INVOICES = { label: 'Invoices', to: '/invoices' };
-const BUDGETS = { label: 'Budgets', to: '/budgets' };
-const REPORTS = { label: 'Reports', to: '/reports' };
-const AUDIT = { label: 'Audit log', to: '/audit-log' };
+const L = (label, to) => ({ label, to });
+const S = (label, items) => ({ label, items });
+
+const OVERVIEW = L('Overview', '/');
+const APPROVALS = L('Approvals', '/approvals');
+const REQUESTS = L('Purchase requests', '/requests');
+const QUOTES = L('Quotations', '/quotations');
+const ORDERS = L('Purchase orders', '/orders');
+const INVOICES = L('Invoices', '/invoices');
+const VENDORS = L('Vendors', '/vendors');
+const ITEMS = L('Items', '/items');
+const BUDGETS = L('Budgets', '/budgets');
+const REPORTS = L('Reports', '/reports');
+const AUDIT = L('Audit log', '/audit-log');
 
 export const MENUS = {
-    'Requester': [D, { label: 'New request', to: '/requests/new' }, { label: 'My requests', to: '/requests' }, { label: 'Receipts', to: '/orders' }],
-    'Branch Manager': [D, APPROVALS, { label: 'Branch requests', to: '/requests' }, { label: 'Branch orders', to: '/orders' }, REPORTS],
-    'Procurement Administrator': [D, APPROVALS, { label: 'Requests', to: '/requests' }, QUOTES, ORDERS, INVOICES, VENDORS, ITEMS, REPORTS],
-    'Finance Officer': [D, APPROVALS, { label: 'Requests', to: '/requests' }, QUOTES, ORDERS, INVOICES, BUDGETS, VENDORS, REPORTS],
-    'Head Office Manager': [D, APPROVALS, { label: 'Requests', to: '/requests' }, QUOTES, ORDERS, INVOICES, BUDGETS, VENDORS, REPORTS, AUDIT],
-    'System Administrator': [D, { label: 'Users and roles', to: '/users' }, AUDIT],
+    'Requester': [S('Workspace', [OVERVIEW, L('New request', '/requests/new'), REQUESTS, L('Deliveries', '/orders')])],
+    'Branch Manager': [S('Workspace', [OVERVIEW, APPROVALS, REQUESTS, ORDERS]), S('Management', [REPORTS])],
+    'Procurement Administrator': [S('Workspace', [OVERVIEW, APPROVALS, REQUESTS, QUOTES, ORDERS, INVOICES]), S('Catalogue', [VENDORS, ITEMS]), S('Management', [REPORTS])],
+    'Finance Officer': [S('Workspace', [OVERVIEW, APPROVALS, REQUESTS, QUOTES, ORDERS, INVOICES]), S('Management', [BUDGETS, VENDORS, REPORTS])],
+    'Head Office Manager': [S('Workspace', [OVERVIEW, APPROVALS, REQUESTS, QUOTES, ORDERS, INVOICES]), S('Management', [BUDGETS, VENDORS, REPORTS, AUDIT])],
+    'System Administrator': [S('Workspace', [OVERVIEW]), S('Administration', [L('Team', '/users'), AUDIT])],
 };
 
 export const TASKS = {

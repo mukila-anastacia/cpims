@@ -47,7 +47,7 @@ export default function RequestDetail() {
 
     return (
         <>
-            <nav className="mb-2 small"><Link to="/requests">Requests</Link> / {r.request_no}</nav>
+            <nav className="mb-2 small"><Link to="/requests">Purchase requests</Link> / {r.request_no}</nav>
             {flash && <div className="alert alert-success py-2">{flash}</div>}
 
             <div className="d-flex justify-content-between align-items-start mb-3">

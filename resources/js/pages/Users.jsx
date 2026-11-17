@@ -63,7 +63,7 @@ export default function Users() {
     return (
         <>
             <div className="d-flex justify-content-between align-items-center mb-1">
-                <h2 className="m-0">Users and roles</h2>
+                <h2 className="m-0">Team</h2>
                 {!form && <button className="btn btn-brand" onClick={() => open()}>Add user</button>}
             </div>
             <p className="text-secondary mb-4">Create accounts, assign roles and branches, and unlock or deactivate users.</p>
