@@ -55,20 +55,39 @@ function Bell() {
     );
 }
 
+function MenuIcon() {
+    return (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+    );
+}
+
 const initials = (name) => name.split(' ').filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+const isPhone = () => window.matchMedia('(max-width: 860px)').matches;
+const KEY = 'cpims-sidebar';
+const saved = () => { try { return localStorage.getItem(KEY) !== 'closed'; } catch { return true; } };
 
 export default function Layout({ children }) {
     const { user, logout } = useAuth();
-    const [menuOpen, setMenuOpen] = useState(false);
     const { pathname } = useLocation();
+    const [open, setOpen] = useState(() => (isPhone() ? false : saved()));
     const sections = MENUS[user.role] ?? [{ label: 'Workspace', items: [{ label: 'Overview', to: '/' }] }];
     const today = new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
-    useEffect(() => { setMenuOpen(false); }, [pathname]);
+    useEffect(() => { if (isPhone()) setOpen(false); }, [pathname]);
+
+    function toggle() {
+        const next = !open;
+        setOpen(next);
+        if (!isPhone()) {
+            try { localStorage.setItem(KEY, next ? 'open' : 'closed'); } catch { /* storage unavailable */ }
+        }
+    }
 
     return (
-        <div className="app">
-            <aside id="main-menu" className={'sidebar' + (menuOpen ? ' open' : '')} aria-label="Main menu">
+        <div className={'app' + (open ? ' menu-open' : '')}>
+            <aside id="main-menu" className="sidebar" aria-label="Main menu" aria-hidden={!open}>
                 <div className="side-brand">
                     <div className="side-name">A-Solar Power Works</div>
                     <div className="side-sub">Procurement</div>
@@ -78,7 +97,7 @@ export default function Layout({ children }) {
                     <div key={s.label} className="nav-group">
                         <div className="nav-label">{s.label}</div>
                         {s.items.map(({ label, to }) => (
-                            <NavLink key={label} to={to} end className={({ isActive }) => 'item' + (isActive ? ' active' : '')}>
+                            <NavLink key={label} to={to} end tabIndex={open ? 0 : -1} className={({ isActive }) => 'item' + (isActive ? ' active' : '')}>
                                 <span>{label}</span>
                             </NavLink>
                         ))}
@@ -93,16 +112,16 @@ export default function Layout({ children }) {
                             <div className="user-role">{user.role}</div>
                         </div>
                     </div>
-                    <button type="button" className="item logout" onClick={logout}>Log out</button>
+                    <button type="button" className="item logout" tabIndex={open ? 0 : -1} onClick={logout}>Log out</button>
                 </div>
             </aside>
-            {menuOpen && <div className="scrim" onClick={() => setMenuOpen(false)} />}
+            {open && <div className="scrim" onClick={() => setOpen(false)} />}
 
             <div className="main">
                 <header className="topbar">
                     <div className="d-flex align-items-center gap-3">
-                        <button type="button" className="icon-btn menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-controls="main-menu" aria-label={menuOpen ? 'Close menu' : 'Open menu'}>
-                            <span className="dots" aria-hidden="true"><i /><i /><i /></span>
+                        <button type="button" className="icon-btn" onClick={toggle} aria-expanded={open} aria-controls="main-menu" aria-label={open ? 'Hide menu' : 'Show menu'}>
+                            <MenuIcon />
                         </button>
                         <span className="today">{today}</span>
                     </div>

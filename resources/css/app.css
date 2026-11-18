@@ -114,9 +114,6 @@ html .btn.btn-accent, html .btn.btn-accent:hover, html .btn.btn-accent:active, h
 .today { color: var(--muted); font-size: .9rem; }
 .icon-btn { position: relative; width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--border); border-radius: 10px; background: #fff; color: var(--strong); padding: 0; }
 .icon-btn .count { position: absolute; top: -6px; right: -6px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--accent); color: #0b2a4a; font-size: .7rem; font-weight: 700; display: flex; align-items: center; justify-content: center; }
-.menu-toggle, .scrim { display: none; }
-.dots { display: inline-flex; flex-direction: column; gap: 4px; }
-.dots i { display: block; width: 4px; height: 4px; border-radius: 50%; background: currentColor; }
 
 /* Spacing: blocks sit 24px apart, a subtitle sits close to its title */
 .content { flex: 1; min-width: 0; max-width: 1200px; width: 100%; padding: 32px; display: flex; flex-direction: column; gap: 1.5rem; }
@@ -178,7 +175,6 @@ html .btn.btn-accent, html .btn.btn-accent:hover, html .btn.btn-accent:active, h
 
 /* Phones and small tablets */
 @media (max-width: 860px) {
-  .menu-toggle { display: inline-flex; }
   .topbar { padding: 10px 16px; }
   .sidebar { display: none; position: fixed; top: 0; left: 0; bottom: 0; width: 280px; z-index: 60; box-shadow: 0 0 40px rgba(14, 23, 38, .25); }
   .sidebar.open { display: flex; }
@@ -201,4 +197,42 @@ html .btn.btn-accent, html .btn.btn-accent:hover, html .btn.btn-accent:active, h
   .content { padding: 0; max-width: none; }
   .panel { border: 0; padding: 0; }
   @page { margin: 16mm; }
+}
+/* ===== Colour and menu toggle ===== */
+:root {
+  --blue: #1d5fb8;
+  --link: #1d5fb8;
+  --blue-soft: #eaf1fb;
+  --orange: #f28c28;
+  --orange-text: #b45309;
+  --bs-link-color: #1d5fb8;
+  --bs-primary: #1d5fb8; --bs-primary-rgb: 29, 95, 184;
+}
+
+/* Orange brand name, with the sidebar's other text kept dark */
+.side-name { color: var(--orange-text); }
+.side-sub { color: var(--muted); }
+
+/* One blue: links, selected menu item, focus, table headers, small labels, bars */
+a { color: var(--blue); }
+.sidebar .item.active { background: var(--blue-soft); color: var(--blue); font-weight: 700; box-shadow: inset 3px 0 0 var(--blue); }
+.table thead th { color: var(--blue); }
+.section-title { color: var(--blue); }
+.panel .label { color: var(--muted); }
+.nav-label { color: var(--muted); }
+.form-control:focus, .form-select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(29, 95, 184, .22); }
+.bar-fill { background: var(--blue); }
+.compare th.sel, .compare td.sel:not(.lowest) { background: var(--blue-soft); }
+.icon-btn { color: var(--strong); }
+
+/* Text stays near-black */
+body, .panel, .table td, .table tbody th, .task, .form-label { color: var(--text); }
+h1, h2, h3, h4, h5, h6, .panel .value, .stat-value, .user-name { color: var(--strong); }
+
+/* Hide and show sidebar, on every screen size */
+.app:not(.menu-open) .sidebar { display: none; }
+.scrim { display: none; }
+@media (max-width: 860px) {
+  .app.menu-open .sidebar { display: flex; position: fixed; top: 0; left: 0; bottom: 0; width: 280px; z-index: 60; box-shadow: 0 0 40px rgba(14, 23, 38, .25); }
+  .app.menu-open .scrim { display: block; position: fixed; inset: 0; background: rgba(14, 23, 38, .4); z-index: 55; }
 }
