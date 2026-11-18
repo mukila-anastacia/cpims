@@ -72,7 +72,7 @@ export default function Layout({ children }) {
     const { user, logout } = useAuth();
     const { pathname } = useLocation();
     const [open, setOpen] = useState(() => (isPhone() ? false : saved()));
-    const sections = MENUS[user.role] ?? [{ label: 'Workspace', items: [{ label: 'Overview', to: '/' }] }];
+    const sections = MENUS[user.role] ?? [{ label: 'Workspace', items: [{ label: 'Dashboard', to: '/' }] }];
     const today = new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
     useEffect(() => { if (isPhone()) setOpen(false); }, [pathname]);

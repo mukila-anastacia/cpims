@@ -198,38 +198,43 @@ html .btn.btn-accent, html .btn.btn-accent:hover, html .btn.btn-accent:active, h
   .panel { border: 0; padding: 0; }
   @page { margin: 16mm; }
 }
+
 /* ===== Colour and menu toggle ===== */
 :root {
-  --blue: #1d5fb8;
-  --link: #1d5fb8;
-  --blue-soft: #eaf1fb;
+  --blue: #0e1726;
+  --link: #0e1726;
+  --blue-soft: #eceff4;
+  --number: #1d5fb8;
   --orange: #f28c28;
   --orange-text: #b45309;
-  --bs-link-color: #1d5fb8;
-  --bs-primary: #1d5fb8; --bs-primary-rgb: 29, 95, 184;
+  --bs-link-color: #0e1726; --bs-link-color-rgb: 14, 23, 38;
+  --bs-link-hover-color: #0e1726; --bs-link-hover-color-rgb: 14, 23, 38;
+  --bs-primary: #0e1726; --bs-primary-rgb: 14, 23, 38;
 }
 
-/* Orange brand name, with the sidebar's other text kept dark */
+/* The brand name is the only orange text */
 .side-name { color: var(--orange-text); }
 .side-sub { color: var(--muted); }
 
-/* One blue: links, selected menu item, focus, table headers, small labels, bars */
-a { color: var(--blue); }
-.sidebar .item.active { background: var(--blue-soft); color: var(--blue); font-weight: 700; box-shadow: inset 3px 0 0 var(--blue); }
-.table thead th { color: var(--blue); }
-.section-title { color: var(--blue); }
-.panel .label { color: var(--muted); }
-.nav-label { color: var(--muted); }
-.form-control:focus, .form-select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(29, 95, 184, .22); }
-.bar-fill { background: var(--blue); }
-.compare th.sel, .compare td.sel:not(.lowest) { background: var(--blue-soft); }
-.icon-btn { color: var(--strong); }
+/* The dashboard numbers are the only blue */
+.stat-value, .stat-value.attention { color: var(--number); }
+
+/* Everything else is neutral */
+a, .btn-link { color: var(--strong); }
+.sidebar .item.active { background: #e8ecf3; color: var(--strong); font-weight: 700; box-shadow: none; }
+.table thead th { color: var(--muted); }
+.section-title { color: var(--muted); }
+.form-control:focus, .form-select:focus { border-color: var(--strong); box-shadow: 0 0 0 3px rgba(14, 23, 38, .14); }
+.bar-fill { background: #3b4558; }
+.compare th.sel, .compare td.sel:not(.lowest) { background: #f1f3f7; }
+.badge.text-bg-info, .badge.text-bg-primary { background-color: #fff !important; color: #1b2433 !important; box-shadow: inset 0 0 0 1px #8a94a6; }
+.alert-info { --bs-alert-color: #1b2433; --bs-alert-bg: #f1f3f7; --bs-alert-border-color: #d9dee7; }
 
 /* Text stays near-black */
 body, .panel, .table td, .table tbody th, .task, .form-label { color: var(--text); }
-h1, h2, h3, h4, h5, h6, .panel .value, .stat-value, .user-name { color: var(--strong); }
+h1, h2, h3, h4, h5, h6, .panel .value, .user-name { color: var(--strong); }
 
-/* Hide and show sidebar, on every screen size */
+/* Hide and show the sidebar on every screen size */
 .app:not(.menu-open) .sidebar { display: none; }
 .scrim { display: none; }
 @media (max-width: 860px) {

@@ -1,7 +1,7 @@
 const L = (label, to) => ({ label, to });
 const S = (label, items) => ({ label, items });
 
-const OVERVIEW = L('Overview', '/');
+const OVERVIEW = L('Dashboard', '/');
 const APPROVALS = L('Approvals', '/approvals');
 const REQUESTS = L('Purchase requests', '/requests');
 const QUOTES = L('Quotations', '/quotations');
