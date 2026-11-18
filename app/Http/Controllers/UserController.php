@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Services\AuditService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
@@ -103,6 +104,9 @@ class UserController extends Controller
 
         $u->update($fill);
         $u->refresh()->load(['role', 'branch']);
+        if ($passwordChanged || $u->status === 'inactive') {
+            DB::table('sessions')->where('user_id', $u->id)->delete();
+        }
 
         $action = 'USER_UPDATED';
         if ($old['status'] !== $u->status) {

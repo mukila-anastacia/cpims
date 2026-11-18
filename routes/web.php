@@ -18,13 +18,11 @@ use Illuminate\Support\Facades\Route;
 
 // JSON API used by the React interface. It uses the normal session and CSRF token (design decision DD-06).
 Route::prefix('api')->group(function () {
-    
     Route::post('login', [AuthController::class, 'login'])->middleware('throttle:10,1');
 
-    Route::middleware('auth')->group(function () {
+    Route::middleware(['auth', 'active', 'throttle:240,1'])->group(function () {
         Route::post('logout', [AuthController::class, 'logout']);
         Route::get('me', [AuthController::class, 'me']);
-        
 
         Route::get('dashboard', [DashboardController::class, 'index']);
         Route::get('notifications', [NotificationController::class, 'index']);
@@ -47,9 +45,8 @@ Route::prefix('api')->group(function () {
             Route::get('approvals', [ApprovalController::class, 'index']);
             Route::post('requests/{id}/decision', [ApprovalController::class, 'decide'])->whereNumber('id');
 
-            // Reports and exports: branch managers see only their own branch (RPT-01 to RPT-03)
             Route::get('reports/summary', [ReportController::class, 'summary']);
-            Route::get('reports/export', [ReportController::class, 'export']);
+            Route::get('reports/export', [ReportController::class, 'export'])->middleware('throttle:20,1,export');
         });
 
         // Vendors, items, quotations and invoices: Procurement manages, Finance and Head Office can view
@@ -69,10 +66,7 @@ Route::prefix('api')->group(function () {
         });
         Route::post('orders/{id}/receipts', [OrderController::class, 'receive'])->whereNumber('id')->middleware('role:Requester,Procurement Administrator');
 
-        // Budgets: Finance sets them, Head Office can view (BUD-01)
         Route::get('budgets', [BudgetController::class, 'index'])->middleware('role:Finance Officer,Head Office Manager');
-
-        // Audit log: Administrator and Head Office (AUD-01, AUD-02)
         Route::get('audit-logs', [AuditLogController::class, 'index'])->middleware('role:System Administrator,Head Office Manager');
 
         Route::middleware('role:Finance Officer')->group(function () {

@@ -5,10 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Setting;
 use App\Models\User;
 use App\Services\AuditService;
+use Carbon\CarbonInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -22,20 +26,30 @@ class AuthController extends Controller
         ]);
 
         $user = User::with(['role', 'branch'])->where('username', $data['username'])->first();
+        $unknownKey = 'login-unknown:' . strtolower($data['username']) . '|' . $request->ip();
+
+        // Unknown usernames are slowed down in the same way as real ones, so the answer never shows which usernames exist
+        if (! $user && RateLimiter::tooManyAttempts($unknownKey, 5)) {
+            return $this->locked(now()->addSeconds(RateLimiter::availableIn($unknownKey)));
+        }
 
         // A locked account stays locked until the lock time passes (UAM-04)
         if ($user && $user->status === 'locked') {
             if ($user->locked_until && $user->locked_until->isFuture()) {
                 AuditService::log('LOGIN_BLOCKED', 'user', $user->id, null, null, $user->id);
-                return response()->json([
-                    'message' => 'Account locked. Try again after ' . $user->locked_until->format('H:i') . '.',
-                ], 423);
+
+                return $this->locked($user->locked_until);
             }
             $user->update(['status' => 'active', 'failed_logins' => 0, 'locked_until' => null]);
         }
 
-        if (! $user || $user->status !== 'active' || ! Hash::check($data['password'], $user->password)) {
-            $this->recordFailure($user, $data['username']);
+        // One password check every time, real or not, so the response time does not reveal the username either
+        $hash = $user?->password ?? Cache::rememberForever('login.dummy_hash', fn () => Hash::make(Str::random(32)));
+        $passwordOk = Hash::check($data['password'], $hash);
+
+        if (! $user || $user->status !== 'active' || ! $passwordOk) {
+            $this->recordFailure($user, $data['username'], $unknownKey);
+
             return response()->json(['message' => 'Invalid username or password.'], 401);
         }
 
@@ -62,10 +76,17 @@ class AuthController extends Controller
         return response()->json(['user' => $this->payload($request->user()->load(['role', 'branch']))]);
     }
 
-    private function recordFailure(?User $user, string $username): void
+    private function locked(CarbonInterface $until): JsonResponse
+    {
+        return response()->json(['message' => 'Account locked. Try again after ' . $until->format('H:i') . '.'], 423);
+    }
+
+    private function recordFailure(?User $user, string $username, string $unknownKey): void
     {
         if (! $user) {
+            RateLimiter::hit($unknownKey, self::LOCK_MINUTES * 60);
             AuditService::log('LOGIN_FAILED', 'user', null, null, ['username' => $username]);
+
             return;
         }
 
