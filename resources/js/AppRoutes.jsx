@@ -1,6 +1,7 @@
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import Layout from './Layout';
+import Account from './pages/Account';
 import Approvals from './pages/Approvals';
 import AuditLog from './pages/AuditLog';
 import Budgets from './pages/Budgets';
@@ -15,6 +16,7 @@ import Orders from './pages/Orders';
 import QuotationCompare from './pages/QuotationCompare';
 import QuotationQueue from './pages/QuotationQueue';
 import Reports from './pages/Reports';
+import Settings from './pages/Settings';
 import RequestDetail from './pages/RequestDetail';
 import RequestForm from './pages/RequestForm';
 import RequestList from './pages/RequestList';
@@ -60,6 +62,8 @@ export default function AppRoutes() {
                 <Route path="/invoices/:id" element={<Guard roles={HEAD}><InvoiceDetail /></Guard>} />
                 <Route path="/budgets" element={<Guard roles={['Finance Officer', 'Head Office Manager']}><Budgets /></Guard>} />
                 <Route path="/reports" element={<Guard roles={APPROVERS}><Reports /></Guard>} />
+                <Route path="/account" element={<Account />} />
+                <Route path="/settings" element={<Guard roles={['System Administrator', 'Head Office Manager']}><Settings /></Guard>} />
                 <Route path="/users" element={<Guard roles={['System Administrator']}><Users /></Guard>} />
                 <Route path="/audit-log" element={<Guard roles={['System Administrator', 'Head Office Manager']}><AuditLog /></Guard>} />
             </Route>

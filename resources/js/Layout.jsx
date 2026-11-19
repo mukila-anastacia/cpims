@@ -105,13 +105,13 @@ export default function Layout({ children }) {
                 ))}
 
                 <div className="side-foot">
-                    <div className="user-block">
+                    <Link to="/account" className="user-block" tabIndex={open ? 0 : -1} aria-label="Your account">
                         <span className="avatar" aria-hidden="true">{initials(user.name)}</span>
                         <div className="user-text">
                             <div className="user-name">{user.name}</div>
                             <div className="user-role">{user.role}</div>
                         </div>
-                    </div>
+                    </Link>
                     <button type="button" className="item logout" tabIndex={open ? 0 : -1} onClick={logout}>Log out</button>
                 </div>
             </aside>

@@ -241,3 +241,11 @@ h1, h2, h3, h4, h5, h6, .panel .value, .user-name { color: var(--strong); }
   .app.menu-open .sidebar { display: flex; position: fixed; top: 0; left: 0; bottom: 0; width: 280px; z-index: 60; box-shadow: 0 0 40px rgba(14, 23, 38, .25); }
   .app.menu-open .scrim { display: block; position: fixed; inset: 0; background: rgba(14, 23, 38, .4); z-index: 55; }
 }
+
+/* ===== Account and settings ===== */
+a.user-block { text-decoration: none; color: inherit; border-radius: 8px; }
+a.user-block:focus-visible { outline: 2px solid var(--strong); outline-offset: 2px; }
+.rule-row { display: grid; grid-template-columns: 90px 1fr 1fr; gap: 1rem; align-items: end; }
+.rule-preview { padding-left: 1.1rem; color: var(--text); }
+.rule-preview li { margin-bottom: .25rem; }
+@media (max-width: 860px) { .rule-row { grid-template-columns: 1fr; } }

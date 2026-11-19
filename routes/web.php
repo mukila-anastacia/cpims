@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ApprovalController;
 use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\AuthController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorController;
@@ -23,6 +25,7 @@ Route::prefix('api')->group(function () {
     Route::middleware(['auth', 'active', 'throttle:240,1'])->group(function () {
         Route::post('logout', [AuthController::class, 'logout']);
         Route::get('me', [AuthController::class, 'me']);
+        Route::post('me/password', [AccountController::class, 'changePassword'])->middleware('throttle:5,1,password');
 
         Route::get('dashboard', [DashboardController::class, 'index']);
         Route::get('notifications', [NotificationController::class, 'index']);
@@ -67,6 +70,7 @@ Route::prefix('api')->group(function () {
         Route::post('orders/{id}/receipts', [OrderController::class, 'receive'])->whereNumber('id')->middleware('role:Requester,Procurement Administrator');
 
         Route::get('budgets', [BudgetController::class, 'index'])->middleware('role:Finance Officer,Head Office Manager');
+        Route::get('settings', [SettingsController::class, 'show'])->middleware('role:System Administrator,Head Office Manager');
         Route::get('audit-logs', [AuditLogController::class, 'index'])->middleware('role:System Administrator,Head Office Manager');
 
         Route::middleware('role:Finance Officer')->group(function () {
@@ -77,6 +81,8 @@ Route::prefix('api')->group(function () {
         });
 
         Route::middleware('role:System Administrator')->group(function () {
+            Route::put('settings', [SettingsController::class, 'update']);
+            Route::put('approval-rules', [SettingsController::class, 'updateApproval']);
             Route::get('users', [UserController::class, 'index']);
             Route::post('users', [UserController::class, 'store']);
             Route::put('users/{id}', [UserController::class, 'update'])->whereNumber('id');

@@ -28,6 +28,10 @@ class AccessMatrixTest extends TestCase
 
         return [
             ['GET', '/api/me', $all],
+            ['POST', '/api/me/password', $all],
+            ['GET', '/api/settings', ['SA', 'HO']],
+            ['PUT', '/api/settings', ['SA']],
+            ['PUT', '/api/approval-rules', ['SA']],
             ['GET', '/api/dashboard', $all],
             ['GET', '/api/notifications', $all],
             ['POST', '/api/notifications/read', $all],
