@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '../api';
 
-const fmtTime = (s) => new Date(s).toLocaleString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+const fmtTime = (s) => { const d = new Date(s); return d.toLocaleDateString('en-GB') + ' ' + d.toLocaleTimeString('en-GB'); };
 const tone = (a) => (/DENIED|FAILED|LOCKED|BLOCKED|REJECTED|CANCELLED|DEACTIVATED|EXCEPTION/.test(a) ? 'danger' : /APPROVED|MATCHED|SELECTED|ISSUED|CREATED|ADDED|RECEIVED/.test(a) ? 'success' : 'secondary');
 
 export default function AuditLog() {
@@ -23,7 +23,7 @@ export default function AuditLog() {
     return (
         <>
             <h2>Audit log</h2>
-            <p className="text-secondary mb-4">A permanent record of who did what, and when. Entries cannot be edited or deleted.</p>
+            <p className="text-secondary mb-4">A permanent record of who did what and when. Entries cannot be edited or deleted.</p>
 
             <div className="d-flex flex-wrap gap-2 mb-3">
                 <select className="form-select" style={{ maxWidth: 240 }} value={action} onChange={e => setAction(e.target.value)} aria-label="Action">

@@ -62,7 +62,7 @@ export default function Reports() {
             </div>
             <p className="text-secondary mb-4">
                 Project indicators for {isBM ? `${user.branch} branch` : (branch ? data.branches.find(b => String(b.id) === branch)?.name : 'all branches')}
-                {from || to ? ` | ${from || 'start'} to ${to || 'today'}` : ' | all time'}. Generated {new Date().toLocaleString('en-GB')}.
+                {from || to ? ` | ${from || 'start'} to ${to || 'today'}` : ' | all time'}. Generated {new Date().toLocaleDateString('en-GB')}.
             </p>
 
             <div className="d-flex flex-wrap gap-2 mb-4 no-print">

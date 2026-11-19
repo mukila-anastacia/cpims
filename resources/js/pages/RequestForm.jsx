@@ -135,7 +135,6 @@ export default function RequestForm() {
 
     return (
         <>
-            <nav className="mb-2 small"><Link to="/requests">Purchase requests</Link> / {requestNo || 'New'}</nav>
             <h2 className="mb-3">{id ? `Edit ${requestNo}` : 'New purchase request'}</h2>
 
             <div className="panel form-card mb-4">

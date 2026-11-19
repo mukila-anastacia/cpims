@@ -66,7 +66,7 @@ export default function Users() {
                 <h2 className="m-0">Team</h2>
                 {!form && <button className="btn btn-brand" onClick={() => open()}>Add user</button>}
             </div>
-            <p className="text-secondary mb-4">Create accounts, assign roles and branches, and unlock or deactivate users.</p>
+            <p className="text-secondary mb-4">Create accounts and assign roles and branches. Unlock or deactivate users.</p>
 
             {flash && <div className="alert alert-success py-2">{flash}</div>}
             {message && !form && <div className="alert alert-danger py-2">{message}</div>}
